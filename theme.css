@@ -1,0 +1,260 @@
+/* Custom overrides for reveal.js black theme */
+
+.reveal {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  color: #e8e8e8;
+}
+
+.reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  text-shadow: none;
+  color: #ffffff;
+}
+
+.reveal h1 { font-size: 2.6em; line-height: 1.15; }
+.reveal h2 { font-size: 1.8em; margin-bottom: 0.6em; }
+.reveal h3 { font-size: 1.2em; color: #b8c5d3; font-weight: 400; }
+.reveal h4 { font-size: 1.0em; color: #8fb4d9; margin-top: 0.8em; }
+
+.reveal p, .reveal li {
+  font-size: 0.85em;
+  line-height: 1.5;
+}
+
+.reveal ul, .reveal ol {
+  display: block;
+  margin-left: 1em;
+}
+
+.reveal li {
+  margin-bottom: 0.45em;
+}
+
+.reveal em {
+  color: #ffd866;
+  font-style: italic;
+}
+
+.reveal strong {
+  color: #a9dc76;
+}
+
+.reveal code {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  font-size: 0.9em;
+  color: #ff6188;
+}
+
+.reveal pre {
+  width: 100%;
+  box-shadow: none;
+  font-size: 0.55em;
+}
+
+.reveal pre code {
+  background: #0d1117;
+  border: 1px solid #2d333b;
+  padding: 1em;
+  border-radius: 8px;
+  color: #d1d9e0;
+}
+
+/* Title slide */
+.title {
+  font-size: 3.2em !important;
+  background: linear-gradient(135deg, #78c6ff 0%, #a78bfa 50%, #f472b6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.4em !important;
+}
+
+.subtitle {
+  color: #b8c5d3 !important;
+  font-weight: 300 !important;
+  margin-bottom: 1.5em !important;
+}
+
+.byline {
+  color: #6b7280;
+  font-size: 0.8em;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+/* Part divider slides */
+.part-label {
+  font-size: 0.9em !important;
+  color: #78c6ff !important;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  margin-bottom: 0.5em !important;
+}
+
+/* Agenda */
+.agenda {
+  list-style: none !important;
+  counter-reset: step;
+  margin-left: 0 !important;
+}
+.agenda li {
+  counter-increment: step;
+  padding: 0.5em 0 0.5em 2.5em;
+  position: relative;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  font-size: 1em;
+}
+.agenda li::before {
+  content: counter(step, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 0.45em;
+  color: #78c6ff;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85em;
+}
+
+/* Two column layout */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2em;
+  text-align: left;
+  margin-top: 1em;
+}
+.two-col h4 {
+  margin-top: 0.2em;
+  border-bottom: 1px solid rgba(120, 198, 255, 0.3);
+  padding-bottom: 0.3em;
+}
+
+/* Comparison table */
+.compare {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1em;
+  font-size: 0.8em;
+}
+.compare th {
+  background: rgba(120, 198, 255, 0.12);
+  color: #78c6ff;
+  padding: 0.7em;
+  text-align: left;
+  border-bottom: 2px solid #78c6ff;
+  font-weight: 700;
+}
+.compare td {
+  padding: 0.6em 0.7em;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  vertical-align: top;
+}
+.compare tr:nth-child(even) td {
+  background: rgba(255,255,255,0.02);
+}
+
+/* Notes / lead text */
+.note {
+  margin-top: 1.5em;
+  padding: 0.8em 1em;
+  background: rgba(255, 216, 102, 0.08);
+  border-left: 3px solid #ffd866;
+  font-size: 0.8em;
+  font-style: italic;
+  color: #d4c896;
+}
+
+.lead {
+  margin-top: 1em;
+  font-size: 0.95em !important;
+  color: #b8c5d3;
+  font-style: italic;
+}
+
+/* Blockquote — provocations */
+.reveal blockquote {
+  background: rgba(255,255,255,0.04);
+  border-left: 4px solid #f472b6;
+  padding: 1em 1.5em;
+  margin: 0.8em 0;
+  font-style: normal;
+  border-radius: 0 8px 8px 0;
+  width: auto;
+  box-shadow: none;
+}
+
+.reveal blockquote.big {
+  font-size: 1.05em;
+  line-height: 1.5;
+  color: #ffffff;
+  text-align: left;
+}
+
+.provocation {
+  color: #f472b6 !important;
+}
+
+/* Numbered lists with style */
+.numbered {
+  list-style: none !important;
+  counter-reset: n;
+  margin-left: 0 !important;
+}
+.numbered li {
+  counter-increment: n;
+  position: relative;
+  padding-left: 2em;
+}
+.numbered li::before {
+  content: counter(n);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1.4em;
+  height: 1.4em;
+  background: linear-gradient(135deg, #78c6ff, #a78bfa);
+  color: #0f2027;
+  border-radius: 50%;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+/* Questions */
+.questions li {
+  padding: 0.6em 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  font-size: 0.95em;
+}
+.questions li::marker {
+  color: #f472b6;
+}
+
+/* Thanks slide */
+.thanks {
+  font-size: 4em !important;
+  background: linear-gradient(135deg, #78c6ff 0%, #a78bfa 50%, #f472b6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Progress bar tint */
+.reveal .progress {
+  color: #78c6ff;
+  height: 4px;
+}
+
+/* Slide number tint */
+.reveal .slide-number {
+  background: rgba(0,0,0,0.4);
+  color: #78c6ff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7em;
+}

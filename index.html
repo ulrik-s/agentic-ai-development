@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Agentic AI Development</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css" id="theme">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css">
+  <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- ========== TITLE ========== -->
+<section data-background-gradient="linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)">
+  <h1 class="title">Agentic AI Development</h1>
+  <h3 class="subtitle">From LLMs to autonomous coding — and what it means for how we work</h3>
+  <p class="byline">Sensative · 2026</p>
+</section>
+
+<section>
+  <h2>What we'll cover</h2>
+  <ol class="agenda">
+    <li>LLMs — a shared mental model</li>
+    <li>From LLM to <em>agent</em></li>
+    <li>Agentic AI in our organisation</li>
+    <li>Code review — do we still need humans?</li>
+    <li>Discussion</li>
+  </ol>
+</section>
+
+<!-- ========== PART 1: LLMs ========== -->
+<section data-background-gradient="linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)">
+  <h2 class="part-label">Part 1</h2>
+  <h1>LLMs — getting on the same page</h1>
+</section>
+
+<section>
+  <h2>What an LLM actually is</h2>
+  <ul>
+    <li>A function: <code>tokens → next token probability</code></li>
+    <li>Trained on enormous corpora of text + code</li>
+    <li>No memory between calls. No database lookup. No internet (by default).</li>
+    <li>It is <em>not</em> retrieving answers — it is <em>generating</em> them</li>
+  </ul>
+  <aside class="note">If you remember one thing: it is a very fast, very fluent <strong>pattern completer</strong>.</aside>
+</section>
+
+<section>
+  <h2>Tokens, context, prediction</h2>
+  <div class="two-col">
+    <div>
+      <h4>Token</h4>
+      <p>A chunk of text (~4 chars). The model sees and emits tokens, not characters or words.</p>
+      <h4>Context window</h4>
+      <p>Everything the model can "see" right now — prompt + conversation + tool outputs. Modern models: 200k–1M tokens.</p>
+    </div>
+    <div>
+      <h4>Prediction loop</h4>
+      <pre><code class="language-text">while not done:
+    next = model(context)
+    context += next
+    emit(next)</code></pre>
+      <p>That's it. Every capability is built on this loop.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>What LLMs are good at</h2>
+  <ul>
+    <li>Fluent natural language — in <em>any</em> language</li>
+    <li>Translation between representations (code ↔ prose ↔ data)</li>
+    <li>Pattern matching across huge amounts of context</li>
+    <li>Tedious work that humans hate: boilerplate, refactors, glue</li>
+    <li>"Knowing a little about a lot" — broad shallow recall</li>
+  </ul>
+</section>
+
+<section>
+  <h2>What LLMs are bad at</h2>
+  <ul>
+    <li><strong>Hallucination</strong> — confident, plausible, wrong</li>
+    <li>Precise arithmetic and counting</li>
+    <li>Knowing what they don't know</li>
+    <li>True long-horizon planning without scaffolding</li>
+    <li>Anything genuinely <em>novel</em> — they interpolate, they don't invent</li>
+  </ul>
+  <aside class="note">Most failure modes are <em>shapes</em> of these. Design around them.</aside>
+</section>
+
+<section>
+  <h2>The shift that made agents possible</h2>
+  <ul>
+    <li><strong>Tool use</strong> — the model can emit "call this function with these args"</li>
+    <li><strong>Larger context</strong> — fit whole codebases, not just snippets</li>
+    <li><strong>Reasoning models</strong> — think before answering, self-critique</li>
+    <li><strong>Reliability</strong> — instruction-following finally works well enough to chain</li>
+  </ul>
+  <p class="lead">The model didn't get smarter overnight. It got <em>usable in a loop</em>.</p>
+</section>
+
+<!-- ========== PART 2: From LLM to Agent ========== -->
+<section data-background-gradient="linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)">
+  <h2 class="part-label">Part 2</h2>
+  <h1>From LLM to agent</h1>
+</section>
+
+<section>
+  <h2>Chatbot vs. agent</h2>
+  <table class="compare">
+    <thead><tr><th>Chatbot</th><th>Agent</th></tr></thead>
+    <tbody>
+      <tr><td>One question, one answer</td><td>A goal, many steps</td></tr>
+      <tr><td>You drive</td><td>It drives</td></tr>
+      <tr><td>Text in, text out</td><td>Reads files, runs commands, calls APIs</td></tr>
+      <tr><td>You evaluate the answer</td><td>It evaluates its own work, retries, replans</td></tr>
+      <tr><td>Stateless</td><td>Maintains state across a session</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>The agent loop</h2>
+  <pre><code class="language-text">  ┌──────────────┐
+  │   PERCEIVE   │  read files, run tests, fetch web
+  └──────┬───────┘
+         ▼
+  ┌──────────────┐
+  │    REASON    │  what does this mean? what next?
+  └──────┬───────┘
+         ▼
+  ┌──────────────┐
+  │     ACT      │  edit code, run command, call tool
+  └──────┬───────┘
+         ▼
+  ┌──────────────┐
+  │   OBSERVE    │  did it work? what changed?
+  └──────┬───────┘
+         └──► back to PERCEIVE
+</code></pre>
+  <p>Everything else — Claude Code, Cursor, Devin, your own scripts — is this loop with different tools bolted on.</p>
+</section>
+
+<section>
+  <h2>What turns a model into an agent</h2>
+  <ul>
+    <li><strong>Tools</strong> — file IO, shell, web, MCP servers, custom APIs</li>
+    <li><strong>A scaffold</strong> — system prompt, memory, the loop itself</li>
+    <li><strong>Permissions</strong> — what it can do without asking</li>
+    <li><strong>Feedback signals</strong> — test results, type errors, linters, screenshots</li>
+    <li><strong>A stopping condition</strong> — "task done" or "give up and ask"</li>
+  </ul>
+</section>
+
+<section>
+  <h2>The tools landscape (today)</h2>
+  <div class="two-col">
+    <div>
+      <h4>IDE-embedded</h4>
+      <ul>
+        <li>Cursor</li>
+        <li>GitHub Copilot (Agent mode)</li>
+        <li>Windsurf</li>
+        <li>JetBrains AI</li>
+      </ul>
+    </div>
+    <div>
+      <h4>CLI / autonomous</h4>
+      <ul>
+        <li>Claude Code (CLI + web)</li>
+        <li>Codex / OpenAI agents</li>
+        <li>Devin</li>
+        <li>Aider</li>
+      </ul>
+    </div>
+  </div>
+  <p class="lead">Different surfaces, same loop. Pick the one that fits your workflow.</p>
+</section>
+
+<!-- ========== PART 3: In our org ========== -->
+<section data-background-gradient="linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)">
+  <h2 class="part-label">Part 3</h2>
+  <h1>Agentic AI in our organisation</h1>
+</section>
+
+<section>
+  <h2>Where it fits in our work</h2>
+  <ul>
+    <li>Feature implementation from a spec or ticket</li>
+    <li>Bug triage and reproduction</li>
+    <li>Refactors and migrations (framework upgrades, API renames)</li>
+    <li>Test writing — especially edge cases</li>
+    <li>Documentation that actually matches the code</li>
+    <li>On-call: log analysis, incident summary, first-line response</li>
+    <li>Code review (more on this in Part 4)</li>
+  </ul>
+</section>
+
+<section>
+  <h2>The effective workflow</h2>
+  <ol class="numbered">
+    <li><strong>Spec</strong> — what does done look like? Write it down.</li>
+    <li><strong>Plan</strong> — let the agent propose. Review before code is written.</li>
+    <li><strong>Implement</strong> — small, verifiable steps. Tests as you go.</li>
+    <li><strong>Verify</strong> — run it. Type-check, lint, test, <em>and</em> actually use the feature.</li>
+    <li><strong>Review</strong> — diff is the source of truth. Read it.</li>
+    <li><strong>Ship</strong> — commit, push, PR. Keep the agent in the loop on CI failures.</li>
+  </ol>
+</section>
+
+<section>
+  <h2>Patterns that work</h2>
+  <ul>
+    <li><strong>Small, well-scoped tasks</strong> — one ticket, not one quarter</li>
+    <li><strong>Tight feedback loops</strong> — tests, types, linters wired up</li>
+    <li><strong>Parallel agents</strong> — independent tasks in independent worktrees</li>
+    <li><strong>"Trust but verify"</strong> — read the diff, run the app</li>
+    <li><strong>Explicit context</strong> — CLAUDE.md, AGENTS.md, READMEs the agent will read</li>
+    <li><strong>Hooks & MCP</strong> — let the agent reach your real systems</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Patterns that fail</h2>
+  <ul>
+    <li>"Build me an app" — too vague, no feedback signal</li>
+    <li>Skipping the plan step on anything non-trivial</li>
+    <li>Approving diffs without reading them</li>
+    <li>Letting the agent invent abstractions for hypothetical futures</li>
+    <li>No tests, no types, no lint → no signal → drift</li>
+    <li>Treating it as autocomplete when it's actually a junior dev — or vice versa</li>
+  </ul>
+</section>
+
+<section>
+  <h2>What changes for us as developers</h2>
+  <div class="two-col">
+    <div>
+      <h4>Less of</h4>
+      <ul>
+        <li>Boilerplate</li>
+        <li>Looking up syntax</li>
+        <li>First-draft code</li>
+        <li>Migration grunt work</li>
+      </ul>
+    </div>
+    <div>
+      <h4>More of</h4>
+      <ul>
+        <li>Specification</li>
+        <li>Reviewing</li>
+        <li>System design</li>
+        <li>Judgement calls</li>
+        <li>Knowing <em>why</em>, not just <em>how</em></li>
+      </ul>
+    </div>
+  </div>
+  <p class="lead">The skill shifts from typing code to <strong>directing</strong> it.</p>
+</section>
+
+<section>
+  <h2>What we should do — concretely</h2>
+  <ul>
+    <li>Pick one agent surface per developer (don't context-switch tools)</li>
+    <li>Wire up our test/lint/type pipelines so the agent gets fast feedback</li>
+    <li>Write a project <code>CLAUDE.md</code> / <code>AGENTS.md</code> per repo</li>
+    <li>Use MCP / GitHub Actions to give agents access to issues, CI, deployments</li>
+    <li>Share prompts and patterns that work — internal cookbook</li>
+    <li>Measure: what did we ship, what regressed, what was reverted</li>
+  </ul>
+</section>
+
+<!-- ========== PART 4: Code review ========== -->
+<section data-background-gradient="linear-gradient(135deg, #2d0a0a 0%, #4a0e0e 100%)">
+  <h2 class="part-label">Part 4</h2>
+  <h1>Code review</h1>
+  <h3 class="subtitle">Do we still need humans for it?</h3>
+</section>
+
+<section>
+  <h2 class="provocation">The compiler argument</h2>
+  <blockquote class="big">
+    Nobody reviews how GCC arranges instructions in the binary.<br>
+    Nobody diffs the JIT output.<br>
+    We <em>trust the toolchain</em>.
+  </blockquote>
+  <p>If an AI writes code that passes tests, types, lint, security scans, and behaves correctly in production — is reviewing it any different from reviewing assembly?</p>
+</section>
+
+<section>
+  <h2>What is code review actually for?</h2>
+  <ul>
+    <li><strong>Correctness</strong> — does it do the thing?</li>
+    <li><strong>Safety</strong> — does it break other things?</li>
+    <li><strong>Maintainability</strong> — can the next person read it?</li>
+    <li><strong>Architectural fit</strong> — does it belong here, like this?</li>
+    <li><strong>Knowledge sharing</strong> — does the team learn the change happened?</li>
+    <li><strong>Accountability</strong> — who said yes?</li>
+  </ul>
+  <p class="lead">Only the first two are <em>verifiable</em>. The rest are <em>judgement</em>.</p>
+</section>
+
+<section>
+  <h2>The compiler analogy doesn't quite hold</h2>
+  <ul>
+    <li>A compiler is <strong>deterministic</strong>. An LLM is not.</li>
+    <li>A compiler has a <strong>spec</strong>. An LLM has training data and a prompt.</li>
+    <li>A compiler's output is read by <em>machines</em>. Our source code is read by <em>humans</em> — and by the next agent.</li>
+    <li>Compiler bugs are rare, reproducible, and shared across the industry. LLM bugs are common, non-reproducible, and yours alone.</li>
+  </ul>
+  <p>But the analogy <em>is</em> useful — it points at where the line moves.</p>
+</section>
+
+<section>
+  <h2>"AI can't be trusted" — can a human?</h2>
+  <ul>
+    <li>Humans hallucinate too — we call it "I was sure that was right"</li>
+    <li>Humans skim diffs, rubber-stamp, miss the obvious</li>
+    <li>Humans have bad days, deadlines, biases</li>
+    <li>Humans don't read every file the change touches</li>
+  </ul>
+  <p class="lead">The honest question isn't <em>"can we trust AI?"</em> — it's <em>"compared to what?"</em></p>
+</section>
+
+<section>
+  <h2>Where AI review beats human review</h2>
+  <ul>
+    <li>Never tired, never skimming</li>
+    <li>Reads <em>every</em> file the diff touches, and the call sites</li>
+    <li>Consistent — same rules every time, no politics</li>
+    <li>Cheap enough to run on every commit, not just on PR</li>
+    <li>Multi-agent: ten reviewers in parallel for the cost of coffee</li>
+    <li>Catches the boring bugs humans miss because they're boring</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Where humans still win</h2>
+  <ul>
+    <li><strong>Intent</strong> — "is this what the customer actually wanted?"</li>
+    <li><strong>Architecture</strong> — "should this even exist?"</li>
+    <li><strong>Politics & ownership</strong> — "whose system is this?"</li>
+    <li><strong>Novel risk</strong> — "we've never done X before; is this safe?"</li>
+    <li><strong>Accountability</strong> — someone signs the change</li>
+    <li><strong>Tacit context</strong> — the things nobody wrote down</li>
+  </ul>
+</section>
+
+<section>
+  <h2>A new model for code review</h2>
+  <pre><code class="language-text">┌───────────────────────────────────────────────────┐
+│  AI: every commit, full diff, every rule          │
+│      → correctness, security, style, regressions  │
+└────────────────────┬──────────────────────────────┘
+                     ▼
+┌───────────────────────────────────────────────────┐
+│  Human: the PR, the architectural decisions       │
+│      → intent, fit, accountability                │
+└───────────────────────────────────────────────────┘</code></pre>
+  <p>Humans review <em>less</em>, but the review they do is <em>higher value</em>.</p>
+</section>
+
+<section>
+  <h2>What this looks like in practice</h2>
+  <ul>
+    <li>AI review runs on every push — comments inline before a human looks</li>
+    <li>Author addresses AI findings before requesting human review</li>
+    <li>Human reviewer focuses on the "<em>why this, why now</em>" questions</li>
+    <li>For low-risk PRs (small diffs, well-tested code) — AI approval may be enough</li>
+    <li>For high-risk PRs — two AI reviewers + a human, every time</li>
+    <li>Post-merge: AI watches production for the regressions humans miss</li>
+  </ul>
+</section>
+
+<section>
+  <h2>The uncomfortable conclusion</h2>
+  <blockquote class="big">
+    We will keep human code review.<br>
+    But we will do <em>less</em> of it,<br>
+    and the parts we keep will be the parts machines can't do —<br>
+    judgement, intent, and accountability.
+  </blockquote>
+  <p>The reviewer of 2027 spends more time asking "<em>should we?</em>" and less time spotting off-by-one errors.</p>
+</section>
+
+<!-- ========== PART 5: Close ========== -->
+<section data-background-gradient="linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)">
+  <h2 class="part-label">Part 5</h2>
+  <h1>Discussion</h1>
+</section>
+
+<section>
+  <h2>Questions worth chewing on</h2>
+  <ul class="questions">
+    <li>Which tasks in <em>your</em> daily work would you give to an agent tomorrow?</li>
+    <li>What would have to be true for you to merge an AI-only-reviewed PR?</li>
+    <li>What does our team's <code>CLAUDE.md</code> need to say?</li>
+    <li>If reviewing becomes the bottleneck — do we hire more reviewers, or more agents?</li>
+    <li>What's the failure mode we're most afraid of — and how would we notice?</li>
+  </ul>
+</section>
+
+<section data-background-gradient="linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)">
+  <h1 class="thanks">Thank you</h1>
+  <p class="byline">Questions, pushback, war stories — all welcome.</p>
+</section>
+
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    slideNumber: 'c/t',
+    transition: 'slide',
+    controls: true,
+    progress: true,
+    plugins: [ RevealHighlight, RevealNotes ]
+  });
+</script>
+</body>
+</html>
