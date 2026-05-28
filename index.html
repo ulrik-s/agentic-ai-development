@@ -20,6 +20,11 @@
   <h1 class="title">Agentic AI Development</h1>
   <h3 class="subtitle">From LLMs to autonomous coding — and what it means for how we work</h3>
   <p class="byline">Sensative · 2026</p>
+  <aside class="notes">
+    Välkomna. Den här presentationen handlar om hur AI-utveckling har gått från "chatbot du frågar saker" till "agent som faktiskt skriver kod åt dig" — och vad det innebär för oss som team.
+    Jag tänker hålla det interaktivt. Avbryt, säg emot, kom med exempel. Diskussionen i slutet är inte ett enda block — vi kan hoppa dit när som helst.
+    Säg vem du är, hur mycket du faktiskt använt agentic tools dagligen. Sätt tonen att du är en av dem, inte en evangelist.
+  </aside>
 </section>
 
 <section>
@@ -31,12 +36,22 @@
     <li>Code review — do we still need humans?</li>
     <li>Discussion</li>
   </ol>
+  <aside class="notes">
+    Del 1 går snabbt — bara så vi har samma mentala modell av vad en LLM faktiskt är. Inget magi.
+    Del 2 är där det blir intressant — vad är skillnaden mellan en chatbot och en agent.
+    Del 3 är "vad betyder det här för oss konkret" — vilka verktyg, vilka workflows.
+    Del 4 är den provokativa biten — behövs människor i code review längre?
+    Del 5 är diskussion. Räkna med att gå dit tidigare om något triggar bra frågor.
+  </aside>
 </section>
 
 <!-- ========== PART 1: LLMs ========== -->
 <section data-background-gradient="linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)">
   <h2 class="part-label">Part 1</h2>
   <h1>LLMs — getting on the same page</h1>
+  <aside class="notes">
+    Snabbt genom det här. De flesta i rummet har använt ChatGPT eller Claude. Men det är värt att vara explicit om vad det faktiskt är — för det förklarar både vad det är bra på och var det kommer fela.
+  </aside>
 </section>
 
 <section>
@@ -48,6 +63,11 @@
     <li>It is <em>not</em> retrieving answers — it is <em>generating</em> them</li>
   </ul>
   <aside class="note">If you remember one thing: it is a very fast, very fluent <strong>pattern completer</strong>.</aside>
+  <aside class="notes">
+    Det viktiga: modellen "vet" ingenting. Den genererar det mest sannolika nästa token givet kontexten.
+    När den verkar minnas något — så har den fått det matat till sig i prompten eller via ett verktyg. Det finns ingen "minnesbank" inuti.
+    Det här förklarar varför den kan hitta på (hallucinera): att hitta på och att svara rätt är samma operation för modellen. Den vet inte skillnaden.
+  </aside>
 </section>
 
 <section>
@@ -68,6 +88,12 @@
       <p>That's it. Every capability is built on this loop.</p>
     </div>
   </div>
+  <aside class="notes">
+    Kontext-fönstret är viktigt att förstå — det är allt modellen "ser" just nu. Hela konversationen, alla filer den läst, alla verktygssvar.
+    1 miljon tokens är ungefär 3000 sidor text. Det räcker för att lägga in hela vår kodbas i ett enda anrop.
+    Det här är en av de stora förändringarna senaste året — förr fick man bara skicka 4000 tokens.
+    Pratet om "prediction loop" — visa kodboxen. Det är bokstavligen vad en LLM är på lägsta nivå. Allt det fancy är byggt ovanpå den loopen.
+  </aside>
 </section>
 
 <section>
@@ -79,6 +105,11 @@
     <li>Tedious work that humans hate: boilerplate, refactors, glue</li>
     <li>"Knowing a little about a lot" — broad shallow recall</li>
   </ul>
+  <aside class="notes">
+    Det här är inte uttömmande. Poängen är: LLMs är bra på saker som handlar om transformation och igenkänning, inte uppfinning.
+    Konkret för oss: refaktorering, glue-kod, att skriva tester, översätta mellan format (JSON → TypeScript-typer, API-spec → klientkod), dokumentation som matchar koden.
+    Det de är BÄST på är saker vi tycker är trist. Det är därför det är värt så mycket.
+  </aside>
 </section>
 
 <section>
@@ -91,6 +122,13 @@
     <li>Anything genuinely <em>novel</em> — they interpolate, they don't invent</li>
   </ul>
   <aside class="note">Most failure modes are <em>shapes</em> of these. Design around them.</aside>
+  <aside class="notes">
+    Hallucination — påhittade API:er, påhittade funktionsnamn, "den här biblioteket har en X()" — nej det har det inte. Vanligaste och mest farliga felet.
+    "Vet inte vad den inte vet" — den kommer aldrig säga "jag är osäker" om man inte tvingar den. Den svarar alltid självsäkert.
+    Långhorisont-planering — en agent som ska fixa 50 saker tappar tråden. Lösningen är att dela upp i mindre steg och ge feedback (tester, typer).
+    Nytt — om du försöker få den att uppfinna en helt ny algoritm är det fel verktyg. Den interpolerar mellan saker den sett.
+    Designprincipen: bygg system där det inte spelar någon roll om den hallucinerar — för testen fångar det, eller verktyget gör det inte möjligt.
+  </aside>
 </section>
 
 <section>
@@ -102,12 +140,23 @@
     <li><strong>Reliability</strong> — instruction-following finally works well enough to chain</li>
   </ul>
   <p class="lead">The model didn't get smarter overnight. It got <em>usable in a loop</em>.</p>
+  <aside class="notes">
+    Det här är viktigt: agenter blev möjliga inte för att modellerna blev "smartare" i någon mystisk mening. Fyra konkreta saker hände.
+    Tool use: modellen kan nu strukturerat säga "kör den här funktionen med de här argumenten". Det betyder att den kan läsa filer, köra tester, anropa API:er.
+    Större kontext: tidigare fick man inte plats med kodbasen. Nu får man det.
+    Reasoning: modellerna tänker först, svarar sedan. Det minskar hallucinationer dramatiskt.
+    Reliability: instruktionsföljande blev bra nog för att kedja 50 steg utan att tappa det.
+    Bottom line — det är inte ett quantum leap i intelligens. Det är att modellen blev pålitlig nog att sätta in i en loop.
+  </aside>
 </section>
 
 <!-- ========== PART 2: From LLM to Agent ========== -->
 <section data-background-gradient="linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)">
   <h2 class="part-label">Part 2</h2>
   <h1>From LLM to agent</h1>
+  <aside class="notes">
+    Nu till det intressanta. Vad är skillnaden mellan att fråga ChatGPT och att låta Claude Code jobba i din kodbas.
+  </aside>
 </section>
 
 <section>
@@ -122,6 +171,12 @@
       <tr><td>Stateless</td><td>Maintains state across a session</td></tr>
     </tbody>
   </table>
+  <aside class="notes">
+    Den mest fundamentala förändringen är vem som driver. Med en chatbot är du föraren — du frågar, den svarar, du frågar igen.
+    Med en agent säger du målet och den driver — den läser filer, kör tester, ändrar saker, kollar om det funkade, försöker igen.
+    Det betyder också att du kan starta något och gå iväg. Det är en stor mental shift.
+    Fråga publiken: hur många här har faktiskt suttit och låtit en agent jobba i 10+ minuter utan att avbryta? Hur kändes det? Tillit-frågan börjar redan här.
+  </aside>
 </section>
 
 <section>
@@ -144,6 +199,11 @@
          └──► back to PERCEIVE
 </code></pre>
   <p>Everything else — Claude Code, Cursor, Devin, your own scripts — is this loop with different tools bolted on.</p>
+  <aside class="notes">
+    Avmystifiera. Alla agenter, hur fancy de än marknadsförs, är varianter av den här loopen.
+    Skillnaden mellan en bra och en dålig agent är: vilka verktyg den har, hur bra observationer den får (tester, typer, lint), och hur den hanterar fel.
+    Det viktiga för oss: vi kan bygga egna agenter. Det är inte rocket science. Kan vi koppla en LLM till våra verktyg har vi en agent.
+  </aside>
 </section>
 
 <section>
@@ -155,6 +215,14 @@
     <li><strong>Feedback signals</strong> — test results, type errors, linters, screenshots</li>
     <li><strong>A stopping condition</strong> — "task done" or "give up and ask"</li>
   </ul>
+  <aside class="notes">
+    De här fem sakerna är vad du designar när du sätter upp en agent. Inte modellen — det är fixt val. Men allt annat är design.
+    Tools — vad får den göra. Bara läsa? Köra shell? Pusha kod?
+    Scaffold — system prompt, CLAUDE.md, hur den minns över tid.
+    Permissions — vad får den göra utan att fråga. För risky är det viktigt att den frågar först.
+    Feedback signals — det här är där våra investeringar i tester/typer/lint betalar tillbaka 10x. En agent utan signaler driver i sidled.
+    Stop condition — när är den klar? När ska den ge upp? Det här missar folk ofta.
+  </aside>
 </section>
 
 <section>
@@ -180,12 +248,22 @@
     </div>
   </div>
   <p class="lead">Different surfaces, same loop. Pick the one that fits your workflow.</p>
+  <aside class="notes">
+    Det är ett snabbt rörligt landskap. Listan stämmer idag, kanske inte om sex månader.
+    IDE-embedded — du sitter kvar i din editor, AI:n är en sidofunktion. Lägre tröskel.
+    CLI / autonomous — du startar något och låter det jobba. Mer kraft, mer tillit krävs.
+    Min rekommendation: välj ETT verktyg och bli bra på det. Kontextväxling mellan tre olika AI-tools är värre än att bara använda ett.
+    Vi i teamet bör konvergera på en eller två — det gör att vi kan dela prompts, patterns, lärdomar.
+  </aside>
 </section>
 
 <!-- ========== PART 3: In our org ========== -->
 <section data-background-gradient="linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)">
   <h2 class="part-label">Part 3</h2>
   <h1>Agentic AI in our organisation</h1>
+  <aside class="notes">
+    Nu det praktiska. Vad gör vi konkret med det här på Sensative.
+  </aside>
 </section>
 
 <section>
@@ -199,6 +277,11 @@
     <li>On-call: log analysis, incident summary, first-line response</li>
     <li>Code review (more on this in Part 4)</li>
   </ul>
+  <aside class="notes">
+    Lista konkreta exempel från vår vardag. Ta gärna 2–3 från publiken: "vilka av era uppgifter senaste veckan skulle agenter kunnat ta?"
+    Den dolda vinnaren här är test-skrivande. Det är något människor är dåliga på (trist, edge cases missas) som AI är väldigt bra på.
+    On-call är också undervärderat. AI som första-läser loggar och föreslår orsak sparar mycket nattsömn.
+  </aside>
 </section>
 
 <section>
@@ -211,6 +294,13 @@
     <li><strong>Review</strong> — diff is the source of truth. Read it.</li>
     <li><strong>Ship</strong> — commit, push, PR. Keep the agent in the loop on CI failures.</li>
   </ol>
+  <aside class="notes">
+    Det här är det sätt jag skulle vilja att vi jobbar. Det är inte mer komplicerat än så här.
+    Step 1 — Spec. Den vanligaste anledningen till att AI:n gör fel är att vi var luddiga. "Done" måste vara konkret.
+    Step 2 — Plan. Be agenten skriva en plan FÖRST, granska den, sen koda. Sparar enormt mycket tid jämfört med att fixa fel halvvägs in.
+    Step 4 — Verify. Köra app:en. Inte bara tester. Tester verifierar kodkorrekthet, inte feature-korrekthet.
+    Step 5 — Review. Diff:en är sanningen. Läs den. Allt agenten skriver i sammanfattning är "vad jag tänkte göra", inte "vad jag faktiskt gjorde".
+  </aside>
 </section>
 
 <section>
@@ -223,6 +313,11 @@
     <li><strong>Explicit context</strong> — CLAUDE.md, AGENTS.md, READMEs the agent will read</li>
     <li><strong>Hooks & MCP</strong> — let the agent reach your real systems</li>
   </ul>
+  <aside class="notes">
+    Parallel agents — den här är värd att stanna vid. Du kan starta tre agenter på tre oberoende tasks samtidigt, gå och fika, kolla diffs. Det är en av de största produktivitetsvinsterna.
+    CLAUDE.md / AGENTS.md — om du bara gör EN sak i dina repon, gör den. Skriv ner: hur du kör tester, hur du kör appen, var koden ligger, vilka konventioner som gäller. Den filen är agentens onboarding.
+    MCP — Model Context Protocol — låter agenten prata med Jira, Slack, GitHub, vad som helst. Är det vi inte utnyttjar tillräckligt än.
+  </aside>
 </section>
 
 <section>
@@ -235,6 +330,12 @@
     <li>No tests, no types, no lint → no signal → drift</li>
     <li>Treating it as autocomplete when it's actually a junior dev — or vice versa</li>
   </ul>
+  <aside class="notes">
+    De här är felen jag ser oftast. Inklusive hos mig själv.
+    "Bygg en app" funkar inte. Det är som att säga åt en junior developer "fixa det" — du kommer få nåt, men inte det du ville.
+    Diffs utan att läsa — den vanligaste anledningen till att AI-kod är dålig i kodbaser. Det är inte AI:n som gjort fel. Det är att ingen sa nej.
+    Sista punkten — kalibrera förväntningar. Det är inte autocomplete (smartare än så). Det är inte heller en magisk full-stack dev (sämre än så). Det är en junior med encyclopedisk kunskap men noll omdöme. Behandla det därefter.
+  </aside>
 </section>
 
 <section>
@@ -261,6 +362,12 @@
     </div>
   </div>
   <p class="lead">The skill shifts from typing code to <strong>directing</strong> it.</p>
+  <aside class="notes">
+    Den här slidens budskap: din värde-add som developer flyttar uppåt i abstraktionsstegen.
+    Det är inte att vi blir överflödiga. Det är att den lägsta nivån — att knappa kod — slutar vara där värdet sitter.
+    Det betyder att junior-rollen förändras. Hur lär man sig om man aldrig behöver skriva boilerplate? Ärlig fråga. Värd att diskutera.
+    För seniorer är det här mest en lättnad. De saker som är jobbiga försvinner. Det som är roligt — design, judgement — blir mer av jobbet.
+  </aside>
 </section>
 
 <section>
@@ -273,6 +380,13 @@
     <li>Share prompts and patterns that work — internal cookbook</li>
     <li>Measure: what did we ship, what regressed, what was reverted</li>
   </ul>
+  <aside class="notes">
+    Det här är actionables. Om jag bara fick välja tre — det är 1, 3 och 5.
+    Verktyget per dev — för att vi ska kunna dela tips måste vi prata samma språk.
+    CLAUDE.md per repo — billigaste och högst impact-investeringen.
+    Internal cookbook — vi ska INTE alla lära oss samma saker individuellt. Skapa en delad plats för "så här fick jag agent X att göra Y bra".
+    Mätning — det här är där vi behöver vara disciplinerade. Annars vet vi inte om det här faktiskt funkar. Spåra: shippad funktionalitet, regressions, reverterad kod.
+  </aside>
 </section>
 
 <!-- ========== PART 4: Code review ========== -->
@@ -280,6 +394,10 @@
   <h2 class="part-label">Part 4</h2>
   <h1>Code review</h1>
   <h3 class="subtitle">Do we still need humans for it?</h3>
+  <aside class="notes">
+    Det här är min favoritdel. Provokativ med flit. Vi går igenom argumentet, vänder på det, och landar någonstans i mitten.
+    Tryck B här om du vill blanka skärmen och starta med frågan rakt ut: "behöver vi människor i code review längre?" Samla 2–3 åsikter innan du går vidare.
+  </aside>
 </section>
 
 <section>
@@ -290,6 +408,11 @@
     We <em>trust the toolchain</em>.
   </blockquote>
   <p>If an AI writes code that passes tests, types, lint, security scans, and behaves correctly in production — is reviewing it any different from reviewing assembly?</p>
+  <aside class="notes">
+    Läs blockquoten högt. Pausa.
+    Säg: "Det här är inte en halmgubbe. Det är en riktig fråga. Vi gör samma sak på flera lager redan — vi reviewar inte vad webpack spottar ut, vi reviewar inte vad TypeScript-compilern genererar, vi reviewar inte Linux schemaläggarens beslut."
+    Vänta. Låt publiken kanske invända. Sen — "okej, men håller analogin?" Det är vad nästa slide reder ut.
+  </aside>
 </section>
 
 <section>
@@ -303,6 +426,11 @@
     <li><strong>Accountability</strong> — who said yes?</li>
   </ul>
   <p class="lead">Only the first two are <em>verifiable</em>. The rest are <em>judgement</em>.</p>
+  <aside class="notes">
+    Fråga publiken innan du visar listan: "vad är code review egentligen till för?" Samla några svar. Förmodligen får du "fånga buggar", "lära nya patterns", "dela kunskap".
+    Visa listan. Poängen: vi har slagit ihop sex olika syften till en aktivitet. AI är jättebra på de första två. På de andra fyra är det inte alls säkert.
+    Den underliggande insikten — kanske ska vi separera dem. Olika typer av review för olika syften.
+  </aside>
 </section>
 
 <section>
@@ -314,6 +442,14 @@
     <li>Compiler bugs are rare, reproducible, and shared across the industry. LLM bugs are common, non-reproducible, and yours alone.</li>
   </ul>
   <p>But the analogy <em>is</em> useful — it points at where the line moves.</p>
+  <aside class="notes">
+    Nu vänder vi argumentet. Kompilator-analogin är frestande men den haltar.
+    Determinism — kompilator + samma input ger alltid samma output. LLM + samma prompt ger olika output. Det enda enskilt största skillnaden.
+    Spec — GCC har en ISO-standard. LLM har en blackbox av träningsdata.
+    Källkod läses av människor — det är poängen med källkod. Maskinkod läses av maskiner. Det är inte samma sak.
+    Compiler-buggar är reproducerbara och delade — när GCC har en bugg fixas den av alla. LLM-buggar är just dina.
+    Men håll fast vid: analogin är inte värdelös. Den pekar mot ATT linjen flyttar — bara inte ända ner till noll review.
+  </aside>
 </section>
 
 <section>
@@ -325,6 +461,13 @@
     <li>Humans don't read every file the change touches</li>
   </ul>
   <p class="lead">The honest question isn't <em>"can we trust AI?"</em> — it's <em>"compared to what?"</em></p>
+  <aside class="notes">
+    Det här är min favoritslide. Vänd frågan tillbaka.
+    Hur många här har approvat en PR utan att verkligen läsa diffen? *Vänta. Räcker upp handen själv om det är sant.*
+    Hur många har missat ett tydligt fel i en review? Hur många har varit den som skickade in det felet?
+    Människor är inte heller en gold standard. Vi är bara den standard vi vant oss vid.
+    Linjen: "AI är inte perfekt — men jämfört med en trött människa som granskar PR fem på fredag eftermiddag är den inte värre. Ibland bättre."
+  </aside>
 </section>
 
 <section>
@@ -337,6 +480,11 @@
     <li>Multi-agent: ten reviewers in parallel for the cost of coffee</li>
     <li>Catches the boring bugs humans miss because they're boring</li>
   </ul>
+  <aside class="notes">
+    Konsistens är underskattat. En människa kan ge olika feedback olika dagar, beroende på dagsform. AI ger samma feedback varje gång.
+    "Cheap enough to run on every commit" — det här är en game changer. Vi har alltid haft code review som flaskhals för att den var dyr. Nu är den billig.
+    Multi-agent — varför stanna vid en reviewer? Kör tre med olika fokus: en på säkerhet, en på korrekthet, en på maintainability. Triangulering.
+  </aside>
 </section>
 
 <section>
@@ -349,6 +497,12 @@
     <li><strong>Accountability</strong> — someone signs the change</li>
     <li><strong>Tacit context</strong> — the things nobody wrote down</li>
   </ul>
+  <aside class="notes">
+    Intent — AI vet vad koden gör. Det vet inte vad användaren ville. Det är fortfarande vårt jobb.
+    Architecture — "ska den här klassen ens existera?" Det är en helhetsfråga som kräver kontext om var vi är på väg.
+    Accountability — när nåt går fel i produktion behöver det finnas en människa som sa "ja, det här går vi med på". Det är inte tekniskt — det är organisatoriskt.
+    Tacit context — alla saker vi vet om vår kund, vår historik, våra konstigheter, som aldrig skrevs ner. Det är vår orättvisa fördel.
+  </aside>
 </section>
 
 <section>
@@ -363,6 +517,11 @@
 │      → intent, fit, accountability                │
 └───────────────────────────────────────────────────┘</code></pre>
   <p>Humans review <em>less</em>, but the review they do is <em>higher value</em>.</p>
+  <aside class="notes">
+    Två lager. AI på commit-nivå — fångar buggar, säkerhet, stil. Snabbt, billigt, alltid.
+    Människor på PR-nivå — fokuserar på "är det här rätt sak att göra över huvud taget".
+    Det här är inte att människor reviewar mindre. Det är att de reviewar SMARTARE. Mindre tid på "du missade en semikolon", mer tid på "har vi tänkt på hur det här interagerar med systemet vi byggde i fjol?"
+  </aside>
 </section>
 
 <section>
@@ -375,6 +534,12 @@
     <li>For high-risk PRs — two AI reviewers + a human, every time</li>
     <li>Post-merge: AI watches production for the regressions humans miss</li>
   </ul>
+  <aside class="notes">
+    Konkret förslag. Det här kan vi börja med imorgon.
+    "Author addresses AI findings först" — det här är avgörande. Annars sitter människan och säger samma sak som AI redan sagt. Slöseri.
+    "Low-risk PRs" — vi behöver definiera vad det är. Storlek på diff, område i kodbasen, finns det tester. Risknivå styr nivå av review.
+    "Post-merge AI watching prod" — det här är framtid. Men det är där det är på väg. AI som kontinuerligt övervakar för regressions och föreslår fix.
+  </aside>
 </section>
 
 <section>
@@ -386,12 +551,22 @@
     judgement, intent, and accountability.
   </blockquote>
   <p>The reviewer of 2027 spends more time asking "<em>should we?</em>" and less time spotting off-by-one errors.</p>
+  <aside class="notes">
+    Läs blockquoten långsamt. Pausa.
+    Det här är inte ett "AI tar våra jobb"-budskap. Det är ett "AI tar de tråkiga delarna av våra jobb"-budskap. De delarna vi inte ville göra ändå.
+    Frågan "should we?" är en högre värde-fråga än "did you typo this?". Vi flyttar uppåt.
+    Övergång till diskussionen: "Det här är min syn. Den är inte huggen i sten. Vad tänker ni?"
+  </aside>
 </section>
 
 <!-- ========== PART 5: Close ========== -->
 <section data-background-gradient="linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)">
   <h2 class="part-label">Part 5</h2>
   <h1>Discussion</h1>
+  <aside class="notes">
+    Öppna golvet. Du kan visa nästa slide med frågor som seed, eller låta diskussionen flöda fritt först.
+    Om det blir tyst — peka på en specifik person med "du jobbar mest med X, hur skulle det här påverka det?"
+  </aside>
 </section>
 
 <section>
@@ -403,11 +578,20 @@
     <li>If reviewing becomes the bottleneck — do we hire more reviewers, or more agents?</li>
     <li>What's the failure mode we're most afraid of — and how would we notice?</li>
   </ul>
+  <aside class="notes">
+    Fem frågor. Du behöver inte gå igenom alla — välj de som triggar mest engagemang.
+    Den andra frågan — "what would have to be true" — är den mest produktiva. Den tvingar folk att bli konkreta om sina tvivel.
+    Sista frågan — failure mode — är där rädslorna kommer fram. Bra ställe att avsluta så vi inte gick hem på en överoptimistisk ton.
+  </aside>
 </section>
 
 <section data-background-gradient="linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)">
   <h1 class="thanks">Thank you</h1>
   <p class="byline">Questions, pushback, war stories — all welcome.</p>
+  <aside class="notes">
+    Tacka publiken. Säg var slidesen finns (GitHub Pages-URL).
+    Erbjud follow-up: "om någon vill prova ett agent-verktyg och inte vet hur man kommer igång, hör av er — jag sätter mig 30 min med er."
+  </aside>
 </section>
 
 </div>
@@ -423,6 +607,11 @@
     transition: 'slide',
     controls: true,
     progress: true,
+    width: 1280,
+    height: 800,
+    margin: 0.06,
+    minScale: 0.2,
+    maxScale: 2.0,
     plugins: [ RevealHighlight, RevealNotes ]
   });
 </script>
