@@ -891,17 +891,63 @@
 <section>
   <h2>The brief</h2>
   <ul>
-    <li><strong>4–5 groups</strong>, 2–4 people each. We pick groups in 5 min.</li>
-    <li>Build something <strong>demoable in 5 minutes</strong> by 14:00.</li>
-    <li>You direct. Claude Code builds. Read every diff.</li>
-    <li>One repo per group. Push to GitHub so we can see what you did.</li>
-    <li>At 14:00 each group shows: <em>what you built</em> + <em>how you built it</em>.</li>
+    <li><strong>4–5 teams</strong>, 2–4 people each.</li>
+    <li><strong>Phase 1</strong> — team builds the foundation together (~30 min)</li>
+    <li><strong>Phase 2</strong> — each person works <em>solo</em> from their own laptop, opens a PR (~2 h, lunch in the middle)</li>
+    <li><strong>Phase 3</strong> — review each other's PRs, integrate, ship (~30 min)</li>
+    <li>By 14:00 — a working app on <code>main</code>, with a PR from every member.</li>
   </ul>
-  <p class="lead">The point is not the app. The point is the workflow.</p>
+  <p class="lead">This is what Claude in a real team looks like. Not one driver — many drivers, one repo.</p>
   <aside class="notes">
-    Var tydlig med "demoable in 5 minutes" — det förhindrar att grupper bygger för stort.
-    "Point is the workflow" — upprepa det. Det är inte en hackathon med vinnare. Det är att alla får KÄNNA hur det är att vara dirigent.
-    Förklara: under demon ska de visa både RESULTATET och PROCESSEN. Vilka prompts användes? Vilka problem dök upp? Vad funkade inte?
+    Det här är det nya formatet. Säg det tydligt: "första halvtimmen bygger ni TILLSAMMANS. Sen splittar ni — alla på sin egen laptop, sina egna PRs."
+    Poängen: visa att Claude funkar i ett riktigt team, inte bara solo.
+    "By 14:00 — a PR from every member" — gör det till en deliverable. Det är där de upptäcker att de måste planera så uppgifterna är ungefär lika stora.
+  </aside>
+</section>
+
+<section>
+  <h2>The flow</h2>
+  <svg class="phase-flow" viewBox="0 0 1100 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <marker id="parr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+        <path d="M0,0 L10,5 L0,10 z" fill="#8fb4d9"/>
+      </marker>
+    </defs>
+    <g>
+      <rect x="40" y="80" width="240" height="80" rx="10" fill="#0d1f33" stroke="#78c6ff" stroke-width="2.5"/>
+      <text x="160" y="100" fill="#78c6ff" font-size="11" font-weight="700" text-anchor="middle" letter-spacing="0.15em">PHASE 1 · TOGETHER</text>
+      <text x="160" y="125" fill="#fff" font-size="15" font-weight="700" text-anchor="middle">Team kickoff</text>
+      <text x="160" y="148" fill="#b8c5d3" font-size="11" text-anchor="middle">scaffold · CLAUDE.md · features</text>
+    </g>
+    <line x1="285" y1="120" x2="395" y2="120" stroke="#8fb4d9" stroke-width="2" marker-end="url(#parr)"/>
+    <g>
+      <rect x="400" y="40" width="280" height="170" rx="10" fill="#222d33" stroke="#a9dc76" stroke-width="2.5"/>
+      <text x="540" y="62" fill="#a9dc76" font-size="11" font-weight="700" text-anchor="middle" letter-spacing="0.15em">PHASE 2 · SOLO</text>
+      <text x="540" y="84" fill="#fff" font-size="15" font-weight="700" text-anchor="middle">Each member, own laptop</text>
+      <g>
+        <rect x="420" y="100" width="240" height="22" rx="4" fill="#1a2b40" stroke="#78c6ff" stroke-width="1.5"/>
+        <text x="540" y="116" fill="#b8c5d3" font-size="11" text-anchor="middle">feature/alice → PR</text>
+        <rect x="420" y="128" width="240" height="22" rx="4" fill="#1a2b40" stroke="#78c6ff" stroke-width="1.5"/>
+        <text x="540" y="144" fill="#b8c5d3" font-size="11" text-anchor="middle">feature/bob → PR</text>
+        <rect x="420" y="156" width="240" height="22" rx="4" fill="#1a2b40" stroke="#78c6ff" stroke-width="1.5"/>
+        <text x="540" y="172" fill="#b8c5d3" font-size="11" text-anchor="middle">feature/carla → PR</text>
+        <rect x="420" y="184" width="240" height="22" rx="4" fill="#1a2b40" stroke="#78c6ff" stroke-width="1.5"/>
+        <text x="540" y="200" fill="#b8c5d3" font-size="11" text-anchor="middle">feature/dan → PR</text>
+      </g>
+    </g>
+    <line x1="685" y1="120" x2="795" y2="120" stroke="#8fb4d9" stroke-width="2" marker-end="url(#parr)"/>
+    <g>
+      <rect x="800" y="80" width="260" height="80" rx="10" fill="#220d33" stroke="#f472b6" stroke-width="2.5"/>
+      <text x="930" y="100" fill="#f472b6" font-size="11" font-weight="700" text-anchor="middle" letter-spacing="0.15em">PHASE 3 · INTEGRATE</text>
+      <text x="930" y="125" fill="#fff" font-size="15" font-weight="700" text-anchor="middle">Review · merge · run</text>
+      <text x="930" y="148" fill="#b8c5d3" font-size="11" text-anchor="middle">AI review + human review</text>
+    </g>
+  </svg>
+  <aside class="notes">
+    Gå igenom diagrammet vänster till höger. Det är arkitekturen för hela hands-on-dagen.
+    Phase 1 är där grupperna lägger grunden — projektval, CLAUDE.md, feature-uppdelning.
+    Phase 2 är där det blir spännande — fyra personer som JOBBAR PARALLELLT med fyra agenter, fyra branches, fyra PRs som rullar in i repot samtidigt.
+    Phase 3 är där de blir lite verkliga konsekvenser av AI-team-utveckling — krockar mellan PRs, AI som reviewar AI:s kod, mänskliga val om vad som faktiskt ska in.
   </aside>
 </section>
 
@@ -921,31 +967,69 @@
     <div>
       <h4>Or freestyle</h4>
       <p>Something useful for <em>your</em> daily work. Internal tool. Personal scratch app. Anything you've wanted but never had time to build.</p>
-      <p class="lead">Constraint: starts from an empty repo at 11:00.<br>Demoable at 14:00.</p>
+      <p class="lead">Pick something that can be cleanly split into <strong>3–4 independent features</strong> — one per team member.</p>
     </div>
   </div>
   <aside class="notes">
-    Ge grupperna 5 min att välja. Inte mer. Om det tar längre sätter du dem på en idé.
-    Ditt jobb under val: gå runt och säg "för stort" om någon vill bygga en full ERP. Riktigt scope = kan slutföras till 14:00 av 3 personer + AI.
-    Freestyle är OK men favorisera starter-idéer om gruppen är osäker. Friktion-fritt = mer tid på själva ARBETET.
+    Viktigt tillägg jämfört med solo-formatet: projektet måste kunna SPLITTAS i 3-4 oberoende features. Annars blockerar folk varandra.
+    Hjälp grupperna med splittningen om de fastnar. T.ex. för kanban: en bygger backend-API, en bygger drag-drop, en bygger persistence, en bygger styling.
+    Säg explicit: undvik features som måste byggas i sekvens. Allas PRs ska kunna gå parallellt.
   </aside>
 </section>
 
 <section>
-  <h2>Rules of engagement</h2>
-  <ul>
-    <li><strong>The driver does not write code.</strong> The driver directs.</li>
-    <li><strong>Rotate the driver</strong> every 30 minutes — everyone gets the seat.</li>
-    <li><strong>Write a <code>CLAUDE.md</code> first.</strong> 5 minutes upfront saves an hour later.</li>
-    <li><strong>Plan, then implement.</strong> Don't let the agent code blind.</li>
-    <li><strong>Read every diff</strong> before approving. Out loud, as a group.</li>
-    <li><strong>Verify by running</strong> — not just by tests passing.</li>
-  </ul>
+  <h2>Phase 1 — Team kickoff (30 min)</h2>
+  <ol class="numbered">
+    <li>Pick a project (5 min — don't overthink it)</li>
+    <li>One person creates a GitHub repo, adds everyone as collaborators</li>
+    <li>Decide on stack <em>together</em>. Keep it simple.</li>
+    <li>Scaffold the empty project — together, screen-shared. One Claude session does this.</li>
+    <li>Write the <code>CLAUDE.md</code> as a team — stack, run commands, conventions, code style</li>
+    <li>Split the work into 3–4 features. Open one GitHub issue per feature. Assign one to each member.</li>
+    <li>Push <code>main</code>. Everyone clones to their own laptop.</li>
+  </ol>
+  <p class="lead"><code>CLAUDE.md</code> is the contract. Once it's pushed, no one diverges from it.</p>
   <aside class="notes">
-    Det här är de viktigaste reglerna. Repetera dem.
-    "Driver doesn't write code" — det är OVANT. Folk kommer instinktivt ta tangentbordet. Stoppa dem.
-    "Rotate every 30 min" — gör att alla får känna både rollerna. Annars riskerar en person ta över hela demon.
-    "Read every diff out loud" — geni-tipset. När man läser kod högt fångar man fel som ögonen missar.
+    Phase 1 är det viktigaste 30 min-passet hela dagen. Om det blir slarvigt här straffar det sig under Phase 2 och 3.
+    Var aktiv som facilitator här. Gå runt och kolla att varje grupp har: en repo, en CLAUDE.md, 3-4 issues, alla har clonat.
+    "CLAUDE.md is the contract" — säg det två gånger. Det är där team-disciplin börjar.
+  </aside>
+</section>
+
+<section>
+  <h2>Phase 2 — Solo work (~2 h, lunch included)</h2>
+  <ul>
+    <li>Branch: <code>feature/&lt;your-name&gt;-&lt;short-thing&gt;</code></li>
+    <li>Open Claude Code on <em>your</em> laptop. Point it at your assigned issue.</li>
+    <li><strong>Plan first.</strong> Ask the agent for a plan. Read it. Adjust. Then code.</li>
+    <li>Verify by running before you push.</li>
+    <li>Open a PR. Description: what, why, how to test.</li>
+    <li>While you wait for review — pick someone else's open PR and review it.</li>
+  </ul>
+  <p class="lead">You will overlap. Don't panic — Claude is good at resolving its own merge conflicts.</p>
+  <aside class="notes">
+    Den här fasen är det de kommer prata om i månader efteråt. Det är där "wow, det funkar i team" -ögonblicket händer.
+    Säg innan de börjar: "lunch är mitt i den här fasen. Det är OK att stänga laptopen och äta. Det är OK att tänka över maten."
+    "Claude is good at resolving its own merge conflicts" — säg det med eftertryck. Många kommer få sin första konflikt och kommer instinktivt panika. Säg "be agenten lösa det. Den klarar det."
+    Gå runt aktivt under den här fasen. Sitt 2 min hos varje person, lyssna på hur de promptar.
+  </aside>
+</section>
+
+<section>
+  <h2>Phase 3 — Review and integrate (~30 min)</h2>
+  <ol class="numbered">
+    <li>Run <code>/code-review</code> (or <code>@claude review this PR</code>) on every open PR</li>
+    <li>Each PR gets <strong>one teammate</strong> as human reviewer — not the author</li>
+    <li>Discuss any AI findings the human reviewer disagrees with</li>
+    <li>Merge in an order that minimises conflicts. Coordinate out loud.</li>
+    <li>Pull <code>main</code>, run the integrated app. Does it work?</li>
+    <li>If not — open a new PR (with Claude's help) to fix the integration</li>
+  </ol>
+  <p class="lead">Watch what AI catches vs. what the human catches. That's the data point.</p>
+  <aside class="notes">
+    Den här fasen är där Part 4 (code review-diskussionen) blir konkret. Säg det till grupperna: "ni får nu se i praktiken vad vi pratade om — AI på commits, människa på PR."
+    Sista bulleten är värdefull att diskutera i demon: "vad fångade AI:n som vi inte hade fångat? Vad fångade vi som AI:n missade?"
+    Tiden är knapp — 30 min är inte mycket. Påminn dem 10 min innan att starta integrationen och inte hänga kvar i fler PRs.
   </aside>
 </section>
 
@@ -974,24 +1058,24 @@
   <aside class="notes">
     Säg explicit: ingen ska sätta upp en API-nyckel idag. Det ökar kostnaden för bolaget i onödan. Premium-seat täcker allt vi gör.
     Om någon säger "jag har redan Cursor" — säg "kör med det om du vill, men då räknas det inte mot Premium-budgeten på samma sätt". Helst Claude Code direkt.
-    Web vs CLI vs IDE — egentligen jämbördigt. Web är lättast att komma igång med på en oprövad maskin.
+    Web vs CLI vs IDE — egentligen jämbördigt. Web är lättast att komma igång med på en oprövad maskin. CLI för power-users.
   </aside>
 </section>
 
 <section>
-  <h2>Setup checklist (~10 min)</h2>
-  <ol class="numbered">
-    <li>Install Claude Code (or open <code>claude.ai/code</code>)</li>
-    <li><code>claude login</code> — pick the Sensative workspace</li>
-    <li>Create a new GitHub repo for your group (private is fine)</li>
-    <li>Clone it locally, <code>cd</code> into it</li>
-    <li>Write a one-page <code>CLAUDE.md</code> — stack, run commands, conventions</li>
-    <li>Open the first prompt with: "Read CLAUDE.md, then plan how to build X. Don't write code yet."</li>
-  </ol>
+  <h2>Rules of engagement</h2>
+  <ul>
+    <li><strong>You don't write code.</strong> You direct. The agent codes.</li>
+    <li><strong><code>CLAUDE.md</code> is the contract</strong> — do not diverge from your team's version</li>
+    <li><strong>Branch from <code>main</code>, PR back to <code>main</code></strong> — never push to main directly</li>
+    <li><strong>AI review before human review</strong> — run <code>/code-review</code> first, address findings, then ping a teammate</li>
+    <li><strong>Read teammates' diffs</strong> — out loud if you're stuck</li>
+    <li><strong>Verify by running</strong>, not just by tests</li>
+  </ul>
   <aside class="notes">
-    Det här är vad varje grupp ska göra mellan 10:30 och 11:00.
-    Hjälp dem genom det. Gå runt, kolla att login funkar, att de skrivit CLAUDE.md. CLAUDE.md är där folk slarvar — och de slarvet betalar sig senare.
-    "Don't write code yet" — den första prompten. Den TVINGAR planeringssteget. Annars hoppar agenten direkt in i kod, och då fastnar man.
+    De här reglerna är annorlunda från solo-formatet — fokus är på TEAM-disciplin.
+    "AI review before human review" — det här är hjärtat i Part 4. Visa det i praktiken här.
+    "Read teammates' diffs out loud" — geni-tipset. Det fångar fel ögonen missar OCH skapar shared understanding i teamet.
   </aside>
 </section>
 
@@ -1001,14 +1085,15 @@
     <li><strong>Agent goes off-track</strong> → stop it, paste a one-line course correction, continue</li>
     <li><strong>Agent loops on the same error</strong> → escape, change tactic ("try a different approach", "show me the actual error first")</li>
     <li><strong>Diff is wrong</strong> → say "revert the last change, here's what I actually wanted"</li>
-    <li><strong>You don't know what to ask for</strong> → ask the agent itself: "what are 3 ways we could approach this?"</li>
-    <li><strong>Group stuck on direction</strong> → raise a hand, I come over</li>
+    <li><strong>Merge conflict on your PR</strong> → ask the agent to resolve it. It will. Read the resolution.</li>
+    <li><strong>You don't know what to ask for</strong> → ask the agent: "what are 3 ways we could approach this?"</li>
+    <li><strong>Team blocked on direction</strong> → raise a hand, I come over</li>
   </ul>
   <p class="lead">Asking the agent is cheap. Use it.</p>
   <aside class="notes">
     Försäkra publiken att fastna är OK. Det är där lärandet sitter.
-    "Asking the agent is cheap" — många glömmer att agenten själv är en bra rådgivare när man inte vet vad man vill. "Föreslå 3 sätt att lösa det här" är en kraftfull prompt.
-    Berätta att du går runt och hjälper aktivt. Ingen är ensam.
+    Lade till en specifik rad om merge conflicts — det kommer hända i Phase 2/3 och folk panikerar första gången.
+    "Asking the agent is cheap" — många glömmer att agenten själv är en bra rådgivare.
   </aside>
 </section>
 
@@ -1045,18 +1130,19 @@
 </section>
 
 <section>
-  <h2>Demo format — 5 minutes per group</h2>
+  <h2>Demo format — 5 minutes per team</h2>
   <ol class="numbered">
-    <li><strong>Show the app</strong> — run it, demonstrate what it does (~1 min)</li>
-    <li><strong>Show your <code>CLAUDE.md</code></strong> — what context did you give the agent? (~1 min)</li>
-    <li><strong>Show one prompt that worked</strong> — and why you think it worked (~1 min)</li>
-    <li><strong>Show one prompt that failed</strong> — and what you did next (~1 min)</li>
-    <li><strong>One thing you'd do differently</strong> next time (~1 min)</li>
+    <li><strong>Run the integrated app</strong> — show what's on <code>main</code> (~1 min)</li>
+    <li><strong>Show your <code>CLAUDE.md</code></strong> — the team contract (~30 s)</li>
+    <li><strong>Show your PR list</strong> — one per member, merged or open (~30 s)</li>
+    <li><strong>Spotlight one PR</strong> — walk through the prompts that built it (~1.5 min)</li>
+    <li><strong>One thing that went wrong</strong> — merge conflict, agent loop, miscommunication (~1 min)</li>
+    <li><strong>One thing you'd do differently</strong> next time (~30 s)</li>
   </ol>
-  <p class="lead">Process &gt; product. We learn more from your prompts than your code.</p>
+  <p class="lead">Process &gt; product. We learn more from your PRs than your code.</p>
   <aside class="notes">
-    Säg det här innan demos börjar så grupperna vet exakt vad de ska visa.
-    Strukturen tvingar fram refletion — utan den blir det bara "titta vad vi byggde".
+    Säg det här innan demos börjar så teamen vet exakt vad de ska visa.
+    Punkt 3 (visa PR-listan) är där team-formatet syns. Alla ska ha en PR. Om någon inte har det — diskutera varför, ärligt.
     "Process > product" — det är den enda regeln som verkligen räknas idag.
   </aside>
 </section>
@@ -1064,16 +1150,17 @@
 <section>
   <h2>What we'll look for</h2>
   <ul>
-    <li><strong>Workflow clarity</strong> — could we copy your process tomorrow?</li>
-    <li><strong>Honest failures</strong> — the dead ends teach more than the wins</li>
+    <li><strong>Team coordination</strong> — how did you split work? did the split survive contact with code?</li>
+    <li><strong>Workflow clarity</strong> — could we copy your process to our real projects tomorrow?</li>
+    <li><strong>Honest failures</strong> — merge conflicts, agent loops, dead ends — the gold</li>
     <li><strong>Prompt craft</strong> — what made an agent productive vs. spinning?</li>
-    <li><strong>The driver/director skill</strong> — when did you say no, redirect, ask for a plan?</li>
-    <li><strong>Surprises</strong> — what did the agent do better than you expected? Worse?</li>
+    <li><strong>Review dynamics</strong> — what did AI catch on the PR? what did humans catch? what did <em>both</em> miss?</li>
   </ul>
   <aside class="notes">
     Det här är de fem dimensionerna vi diskuterar efter alla demos.
+    "Review dynamics" — den är direkt kopplad till Part 4. Du knyter ihop hela dagen där.
     "Honest failures" — uppmuntra det. Den grupp som visar mest ärlig "vi körde fast i 40 min på X" är ofta mest värdefull.
-    Avsluta inte presentationen efter den här sliden — gå direkt vidare till första gruppens demo.
+    Avsluta inte presentationen efter den här sliden — gå direkt vidare till första teamets demo.
   </aside>
 </section>
 
