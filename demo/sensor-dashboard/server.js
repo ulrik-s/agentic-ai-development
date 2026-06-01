@@ -13,8 +13,33 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', uptime: process.uptime() });
 });
 
-// TODO (issue #1): GET /api/readings — return readings from data/readings.json
-// Supports query params: ?sensor=<id>&from=<iso>&to=<iso>&limit=<n>
+const DEFAULT_LIMIT = 500;
+const MAX_LIMIT = 5000;
+
+app.get('/api/readings', (req, res) => {
+  const { sensor, type, from, to } = req.query;
+
+  let limit = DEFAULT_LIMIT;
+  if (req.query.limit !== undefined) {
+    limit = Number(req.query.limit);
+    if (!Number.isInteger(limit) || limit < 1) {
+      return res.status(400).json({ error: 'limit must be a positive integer' });
+    }
+    limit = Math.min(limit, MAX_LIMIT);
+  }
+
+  let readings = JSON.parse(fs.readFileSync(DATA_FILE, 'utf-8'));
+
+  if (sensor) readings = readings.filter((r) => r.sensor_id === sensor);
+  if (type) readings = readings.filter((r) => r.type === type);
+  if (from) readings = readings.filter((r) => r.ts >= from);
+  if (to) readings = readings.filter((r) => r.ts <= to);
+
+  readings.sort((a, b) => a.ts.localeCompare(b.ts));
+  if (readings.length > limit) readings = readings.slice(-limit);
+
+  res.json({ count: readings.length, readings });
+});
 
 // TODO (issue #4): POST /api/alerts — store a threshold alert rule
 // TODO (issue #4): GET  /api/alerts — list active alerts
