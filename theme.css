@@ -344,3 +344,12 @@
   height: auto;
   margin: 0.5em auto;
 }
+
+/* Hands-on phase flow diagram */
+.phase-flow {
+  display: block;
+  width: 95%;
+  max-width: 1100px;
+  height: auto;
+  margin: 0.5em auto;
+}
