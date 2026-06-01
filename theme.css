@@ -264,3 +264,83 @@
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.7em;
 }
+
+/* ---- SVG illustrations ---- */
+
+.timeline {
+  display: block;
+  width: 95%;
+  max-width: 1100px;
+  margin: 0.5em auto 1em;
+  height: auto;
+}
+
+.schedule {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2em;
+  text-align: left;
+  margin-top: 0.5em;
+}
+
+.schedule h4 {
+  margin: 0 0 0.4em;
+  color: #78c6ff;
+  border-bottom: 1px solid rgba(120, 198, 255, 0.3);
+  padding-bottom: 0.2em;
+}
+
+.tight {
+  list-style: none !important;
+  margin-left: 0 !important;
+}
+
+.tight li {
+  padding: 0.15em 0;
+  font-size: 0.85em;
+  margin-bottom: 0.15em;
+}
+
+.tight li code {
+  color: #78c6ff;
+  background: rgba(120, 198, 255, 0.08);
+  margin-right: 0.5em;
+  font-size: 0.9em;
+}
+
+/* Part divider hero illustrations */
+.divider-hero {
+  display: block;
+  width: 60%;
+  max-width: 600px;
+  height: auto;
+  margin: 0 auto 1em;
+  opacity: 0.95;
+}
+
+/* Agent loop diagram */
+.agent-loop {
+  display: block;
+  width: 75%;
+  max-width: 720px;
+  height: auto;
+  margin: 0.5em auto;
+}
+
+/* Live demo flow diagram */
+.demo-flow {
+  display: block;
+  width: 95%;
+  max-width: 1000px;
+  height: auto;
+  margin: 0.5em auto;
+}
+
+/* Code review two-layer model */
+.review-model {
+  display: block;
+  width: 90%;
+  max-width: 900px;
+  height: auto;
+  margin: 0.5em auto;
+}
