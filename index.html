@@ -172,82 +172,35 @@
 </section>
 
 <section>
-  <h2>Tokens, context, prediction</h2>
+  <h2>Where LLMs help — and where they hurt</h2>
   <div class="two-col">
     <div>
-      <h4>Token</h4>
-      <p>A chunk of text (~4 chars). The model sees and emits tokens, not characters or words.</p>
-      <h4>Context window</h4>
-      <p>Everything the model can "see" right now — prompt + conversation + tool outputs. Modern models: 200k–1M tokens.</p>
+      <h4>Good at</h4>
+      <ul class="tight">
+        <li>Fluent text in any language</li>
+        <li>Translation: code ↔ prose ↔ data</li>
+        <li>Pattern matching across huge context</li>
+        <li>Tedious work: boilerplate, refactors, glue</li>
+        <li>Broad shallow recall</li>
+      </ul>
     </div>
     <div>
-      <h4>Prediction loop</h4>
-      <pre><code class="language-text">while not done:
-    next = model(context)
-    context += next
-    emit(next)</code></pre>
-      <p>That's it. Every capability is built on this loop.</p>
+      <h4>Bad at</h4>
+      <ul class="tight">
+        <li><strong>Hallucination</strong> — confident, plausible, wrong</li>
+        <li>Precise arithmetic &amp; counting</li>
+        <li>Knowing what they don't know</li>
+        <li>Long-horizon planning without scaffolding</li>
+        <li>Anything genuinely <em>novel</em></li>
+      </ul>
     </div>
   </div>
+  <p class="lead">Design around the weaknesses — most failure modes are shapes of these.</p>
   <aside class="notes">
-    Kontext-fönstret är viktigt att förstå — det är allt modellen "ser" just nu. Hela konversationen, alla filer den läst, alla verktygssvar.
-    1 miljon tokens är ungefär 3000 sidor text. Det räcker för att lägga in hela vår kodbas i ett enda anrop.
-    Det här är en av de stora förändringarna senaste året — förr fick man bara skicka 4000 tokens.
-    Pratet om "prediction loop" — visa kodboxen. Det är bokstavligen vad en LLM är på lägsta nivå. Allt det fancy är byggt ovanpå den loopen.
-  </aside>
-</section>
-
-<section>
-  <h2>What LLMs are good at</h2>
-  <ul>
-    <li>Fluent natural language — in <em>any</em> language</li>
-    <li>Translation between representations (code ↔ prose ↔ data)</li>
-    <li>Pattern matching across huge amounts of context</li>
-    <li>Tedious work that humans hate: boilerplate, refactors, glue</li>
-    <li>"Knowing a little about a lot" — broad shallow recall</li>
-  </ul>
-  <aside class="notes">
-    Det här är inte uttömmande. Poängen är: LLMs är bra på saker som handlar om transformation och igenkänning, inte uppfinning.
-    Konkret för oss: refaktorering, glue-kod, att skriva tester, översätta mellan format (JSON → TypeScript-typer, API-spec → klientkod), dokumentation som matchar koden.
+    Snabb genomgång av båda kolumnerna — säg poängen: bra på transformation, dåligt på uppfinning.
+    Hallucination är det enskilt farligaste — påhittade API:er, påhittade funktionsnamn. Vanligaste och mest farliga felet.
+    Designprincipen: bygg system där det inte spelar någon roll om den hallucinerar — testen fångar det, eller verktyget gör det inte möjligt.
     Det de är BÄST på är saker vi tycker är trist. Det är därför det är värt så mycket.
-  </aside>
-</section>
-
-<section>
-  <h2>What LLMs are bad at</h2>
-  <ul>
-    <li><strong>Hallucination</strong> — confident, plausible, wrong</li>
-    <li>Precise arithmetic and counting</li>
-    <li>Knowing what they don't know</li>
-    <li>True long-horizon planning without scaffolding</li>
-    <li>Anything genuinely <em>novel</em> — they interpolate, they don't invent</li>
-  </ul>
-  <aside class="note">Most failure modes are <em>shapes</em> of these. Design around them.</aside>
-  <aside class="notes">
-    Hallucination — påhittade API:er, påhittade funktionsnamn, "den här biblioteket har en X()" — nej det har det inte. Vanligaste och mest farliga felet.
-    "Vet inte vad den inte vet" — den kommer aldrig säga "jag är osäker" om man inte tvingar den. Den svarar alltid självsäkert.
-    Långhorisont-planering — en agent som ska fixa 50 saker tappar tråden. Lösningen är att dela upp i mindre steg och ge feedback (tester, typer).
-    Nytt — om du försöker få den att uppfinna en helt ny algoritm är det fel verktyg. Den interpolerar mellan saker den sett.
-    Designprincipen: bygg system där det inte spelar någon roll om den hallucinerar — för testen fångar det, eller verktyget gör det inte möjligt.
-  </aside>
-</section>
-
-<section>
-  <h2>The shift that made agents possible</h2>
-  <ul>
-    <li><strong>Tool use</strong> — the model can emit "call this function with these args"</li>
-    <li><strong>Larger context</strong> — fit whole codebases, not just snippets</li>
-    <li><strong>Reasoning models</strong> — think before answering, self-critique</li>
-    <li><strong>Reliability</strong> — instruction-following finally works well enough to chain</li>
-  </ul>
-  <p class="lead">The model didn't get smarter overnight. It got <em>usable in a loop</em>.</p>
-  <aside class="notes">
-    Det här är viktigt: agenter blev möjliga inte för att modellerna blev "smartare" i någon mystisk mening. Fyra konkreta saker hände.
-    Tool use: modellen kan nu strukturerat säga "kör den här funktionen med de här argumenten". Det betyder att den kan läsa filer, köra tester, anropa API:er.
-    Större kontext: tidigare fick man inte plats med kodbasen. Nu får man det.
-    Reasoning: modellerna tänker först, svarar sedan. Det minskar hallucinationer dramatiskt.
-    Reliability: instruktionsföljande blev bra nog för att kedja 50 steg utan att tappa det.
-    Bottom line — det är inte ett quantum leap i intelligens. Det är att modellen blev pålitlig nog att sätta in i en loop.
   </aside>
 </section>
 
@@ -354,62 +307,11 @@
     <text x="360" y="195" fill="#78c6ff" font-size="14" text-anchor="middle" font-weight="700" letter-spacing="0.2em">GOAL</text>
     <text x="360" y="215" fill="#6b7280" font-size="10" text-anchor="middle">loop until done</text>
   </svg>
-  <p>Everything else — Claude Code, Cursor, Devin, your own scripts — is this loop with different tools bolted on.</p>
+  <p>Claude Code is this loop with shell, file IO, and git bolted on.</p>
   <aside class="notes">
     Avmystifiera. Alla agenter, hur fancy de än marknadsförs, är varianter av den här loopen.
     Skillnaden mellan en bra och en dålig agent är: vilka verktyg den har, hur bra observationer den får (tester, typer, lint), och hur den hanterar fel.
     Det viktiga för oss: vi kan bygga egna agenter. Det är inte rocket science. Kan vi koppla en LLM till våra verktyg har vi en agent.
-  </aside>
-</section>
-
-<section>
-  <h2>What turns a model into an agent</h2>
-  <ul>
-    <li><strong>Tools</strong> — file IO, shell, web, MCP servers, custom APIs</li>
-    <li><strong>A scaffold</strong> — system prompt, memory, the loop itself</li>
-    <li><strong>Permissions</strong> — what it can do without asking</li>
-    <li><strong>Feedback signals</strong> — test results, type errors, linters, screenshots</li>
-    <li><strong>A stopping condition</strong> — "task done" or "give up and ask"</li>
-  </ul>
-  <aside class="notes">
-    De här fem sakerna är vad du designar när du sätter upp en agent. Inte modellen — det är fixt val. Men allt annat är design.
-    Tools — vad får den göra. Bara läsa? Köra shell? Pusha kod?
-    Scaffold — system prompt, CLAUDE.md, hur den minns över tid.
-    Permissions — vad får den göra utan att fråga. För risky är det viktigt att den frågar först.
-    Feedback signals — det här är där våra investeringar i tester/typer/lint betalar tillbaka 10x. En agent utan signaler driver i sidled.
-    Stop condition — när är den klar? När ska den ge upp? Det här missar folk ofta.
-  </aside>
-</section>
-
-<section>
-  <h2>The tools landscape (today)</h2>
-  <div class="two-col">
-    <div>
-      <h4>IDE-embedded</h4>
-      <ul>
-        <li>Cursor</li>
-        <li>GitHub Copilot (Agent mode)</li>
-        <li>Windsurf</li>
-        <li>JetBrains AI</li>
-      </ul>
-    </div>
-    <div>
-      <h4>CLI / autonomous</h4>
-      <ul>
-        <li>Claude Code (CLI + web)</li>
-        <li>Codex / OpenAI agents</li>
-        <li>Devin</li>
-        <li>Aider</li>
-      </ul>
-    </div>
-  </div>
-  <p class="lead">Different surfaces, same loop. Pick the one that fits your workflow.</p>
-  <aside class="notes">
-    Det är ett snabbt rörligt landskap. Listan stämmer idag, kanske inte om sex månader.
-    IDE-embedded — du sitter kvar i din editor, AI:n är en sidofunktion. Lägre tröskel.
-    CLI / autonomous — du startar något och låter det jobba. Mer kraft, mer tillit krävs.
-    Min rekommendation: välj ETT verktyg och bli bra på det. Kontextväxling mellan tre olika AI-tools är värre än att bara använda ett.
-    Vi i teamet bör konvergera på en eller två — det gör att vi kan dela prompts, patterns, lärdomar.
   </aside>
 </section>
 
@@ -454,24 +356,6 @@
 </section>
 
 <section>
-  <h2>Where it fits in our work</h2>
-  <ul>
-    <li>Feature implementation from a spec or ticket</li>
-    <li>Bug triage and reproduction</li>
-    <li>Refactors and migrations (framework upgrades, API renames)</li>
-    <li>Test writing — especially edge cases</li>
-    <li>Documentation that actually matches the code</li>
-    <li>On-call: log analysis, incident summary, first-line response</li>
-    <li>Code review (more on this in Part 4)</li>
-  </ul>
-  <aside class="notes">
-    Lista konkreta exempel från vår vardag. Ta gärna 2–3 från publiken: "vilka av era uppgifter senaste veckan skulle agenter kunnat ta?"
-    Den dolda vinnaren här är test-skrivande. Det är något människor är dåliga på (trist, edge cases missas) som AI är väldigt bra på.
-    On-call är också undervärderat. AI som första-läser loggar och föreslår orsak sparar mycket nattsömn.
-  </aside>
-</section>
-
-<section>
   <h2>The effective workflow</h2>
   <ol class="numbered">
     <li><strong>Spec</strong> — what does done look like? Write it down.</li>
@@ -487,92 +371,6 @@
     Step 2 — Plan. Be agenten skriva en plan FÖRST, granska den, sen koda. Sparar enormt mycket tid jämfört med att fixa fel halvvägs in.
     Step 4 — Verify. Köra app:en. Inte bara tester. Tester verifierar kodkorrekthet, inte feature-korrekthet.
     Step 5 — Review. Diff:en är sanningen. Läs den. Allt agenten skriver i sammanfattning är "vad jag tänkte göra", inte "vad jag faktiskt gjorde".
-  </aside>
-</section>
-
-<section>
-  <h2>Patterns that work</h2>
-  <ul>
-    <li><strong>Small, well-scoped tasks</strong> — one ticket, not one quarter</li>
-    <li><strong>Tight feedback loops</strong> — tests, types, linters wired up</li>
-    <li><strong>Parallel agents</strong> — independent tasks in independent worktrees</li>
-    <li><strong>"Trust but verify"</strong> — read the diff, run the app</li>
-    <li><strong>Explicit context</strong> — CLAUDE.md, AGENTS.md, READMEs the agent will read</li>
-    <li><strong>Hooks & MCP</strong> — let the agent reach your real systems</li>
-  </ul>
-  <aside class="notes">
-    Parallel agents — den här är värd att stanna vid. Du kan starta tre agenter på tre oberoende tasks samtidigt, gå och fika, kolla diffs. Det är en av de största produktivitetsvinsterna.
-    CLAUDE.md / AGENTS.md — om du bara gör EN sak i dina repon, gör den. Skriv ner: hur du kör tester, hur du kör appen, var koden ligger, vilka konventioner som gäller. Den filen är agentens onboarding.
-    MCP — Model Context Protocol — låter agenten prata med Jira, Slack, GitHub, vad som helst. Är det vi inte utnyttjar tillräckligt än.
-  </aside>
-</section>
-
-<section>
-  <h2>Patterns that fail</h2>
-  <ul>
-    <li>"Build me an app" — too vague, no feedback signal</li>
-    <li>Skipping the plan step on anything non-trivial</li>
-    <li>Approving diffs without reading them</li>
-    <li>Letting the agent invent abstractions for hypothetical futures</li>
-    <li>No tests, no types, no lint → no signal → drift</li>
-    <li>Treating it as autocomplete when it's actually a junior dev — or vice versa</li>
-  </ul>
-  <aside class="notes">
-    De här är felen jag ser oftast. Inklusive hos mig själv.
-    "Bygg en app" funkar inte. Det är som att säga åt en junior developer "fixa det" — du kommer få nåt, men inte det du ville.
-    Diffs utan att läsa — den vanligaste anledningen till att AI-kod är dålig i kodbaser. Det är inte AI:n som gjort fel. Det är att ingen sa nej.
-    Sista punkten — kalibrera förväntningar. Det är inte autocomplete (smartare än så). Det är inte heller en magisk full-stack dev (sämre än så). Det är en junior med encyclopedisk kunskap men noll omdöme. Behandla det därefter.
-  </aside>
-</section>
-
-<section>
-  <h2>What changes for us as developers</h2>
-  <div class="two-col">
-    <div>
-      <h4>Less of</h4>
-      <ul>
-        <li>Boilerplate</li>
-        <li>Looking up syntax</li>
-        <li>First-draft code</li>
-        <li>Migration grunt work</li>
-      </ul>
-    </div>
-    <div>
-      <h4>More of</h4>
-      <ul>
-        <li>Specification</li>
-        <li>Reviewing</li>
-        <li>System design</li>
-        <li>Judgement calls</li>
-        <li>Knowing <em>why</em>, not just <em>how</em></li>
-      </ul>
-    </div>
-  </div>
-  <p class="lead">The skill shifts from typing code to <strong>directing</strong> it.</p>
-  <aside class="notes">
-    Den här slidens budskap: din värde-add som developer flyttar uppåt i abstraktionsstegen.
-    Det är inte att vi blir överflödiga. Det är att den lägsta nivån — att knappa kod — slutar vara där värdet sitter.
-    Det betyder att junior-rollen förändras. Hur lär man sig om man aldrig behöver skriva boilerplate? Ärlig fråga. Värd att diskutera.
-    För seniorer är det här mest en lättnad. De saker som är jobbiga försvinner. Det som är roligt — design, judgement — blir mer av jobbet.
-  </aside>
-</section>
-
-<section>
-  <h2>What we should do — concretely</h2>
-  <ul>
-    <li>Pick one agent surface per developer (don't context-switch tools)</li>
-    <li>Wire up our test/lint/type pipelines so the agent gets fast feedback</li>
-    <li>Write a project <code>CLAUDE.md</code> / <code>AGENTS.md</code> per repo</li>
-    <li>Use MCP / GitHub Actions to give agents access to issues, CI, deployments</li>
-    <li>Share prompts and patterns that work — internal cookbook</li>
-    <li>Measure: what did we ship, what regressed, what was reverted</li>
-  </ul>
-  <aside class="notes">
-    Det här är actionables. Om jag bara fick välja tre — det är 1, 3 och 5.
-    Verktyget per dev — för att vi ska kunna dela tips måste vi prata samma språk.
-    CLAUDE.md per repo — billigaste och högst impact-investeringen.
-    Internal cookbook — vi ska INTE alla lära oss samma saker individuellt. Skapa en delad plats för "så här fick jag agent X att göra Y bra".
-    Mätning — det här är där vi behöver vara disciplinerade. Annars vet vi inte om det här faktiskt funkar. Spåra: shippad funktionalitet, regressions, reverterad kod.
   </aside>
 </section>
 
@@ -633,9 +431,9 @@
   </svg>
   <aside class="notes">
     Det här är översikten du vill att publiken har när du startar demon.
-    "Vänster: fem issues redan skapade i GitHub. Mitten: tre agenter i parallella web-sessioner som jag startar nu, plus en fjärde som triggas av @claude-kommentar i GitHub. Höger: AI-review på diff:en, och jag som dirigent."
-    Switcha sen till din browser och kör demon enligt demo/DEMO_SCRIPT.md. När du är klar — kom tillbaka till nästa slide.
-    Detta är ditt naturliga "switch to browser" -ögonblick. Tryck B om du vill blanka projektorn medan du växlar.
+    "Vänster: fem issues redan skapade i GitHub. Mitten: tre Claude Code CLI-sessioner i parallella git worktrees som jag startar nu, plus en fjärde agent som triggas av @claude-kommentar i GitHub. Höger: AI-review på diff:en, och jag som dirigent."
+    Switcha sen till din terminal/browser och kör demon enligt demo/DEMO_SCRIPT.md. När du är klar — kom tillbaka till nästa slide.
+    Detta är ditt naturliga "switch to terminal" -ögonblick. Tryck B om du vill blanka projektorn medan du växlar.
   </aside>
 </section>
 
@@ -643,7 +441,7 @@
   <h2>What you just saw</h2>
   <ul>
     <li><strong>Parallelism</strong> — four agents, four branches, no merge conflicts (because <code>CLAUDE.md</code> kept them in their lanes)</li>
-    <li><strong>Surface fluidity</strong> — same model, three places: web, IDE, GitHub Action</li>
+    <li><strong>Parallel sessions</strong> — multiple Claude Code CLI instances, isolated worktrees, one repo</li>
     <li><strong>Zero API key</strong> — everything billed against our Premium seat. Predictable cost.</li>
     <li><strong>The human role</strong> — spec, redirect, review, merge. I did not write a line of code.</li>
   </ul>
@@ -750,37 +548,22 @@
 </section>
 
 <section>
-  <h2>Where AI review beats human review</h2>
-  <ul>
-    <li>Never tired, never skimming</li>
-    <li>Reads <em>every</em> file the diff touches, and the call sites</li>
-    <li>Consistent — same rules every time, no politics</li>
-    <li>Cheap enough to run on every commit, not just on PR</li>
-    <li>Multi-agent: ten reviewers in parallel for the cost of coffee</li>
-    <li>Catches the boring bugs humans miss because they're boring</li>
-  </ul>
+  <h2>Who's better at what?</h2>
+  <table class="compare">
+    <thead><tr><th>AI wins on</th><th>Humans still win on</th></tr></thead>
+    <tbody>
+      <tr><td>Never tired, never skimming</td><td><strong>Intent</strong> — what did the customer want?</td></tr>
+      <tr><td>Reads every file the diff touches</td><td><strong>Architecture</strong> — should this exist?</td></tr>
+      <tr><td>Consistent — no bad days, no politics</td><td><strong>Novel risk</strong> — we've never done X</td></tr>
+      <tr><td>Cheap on every commit, not just PR</td><td><strong>Accountability</strong> — someone signs the change</td></tr>
+      <tr><td>Multi-agent: ten reviewers in parallel</td><td><strong>Tacit context</strong> — things nobody wrote down</td></tr>
+    </tbody>
+  </table>
   <aside class="notes">
-    Konsistens är underskattat. En människa kan ge olika feedback olika dagar, beroende på dagsform. AI ger samma feedback varje gång.
-    "Cheap enough to run on every commit" — det här är en game changer. Vi har alltid haft code review som flaskhals för att den var dyr. Nu är den billig.
-    Multi-agent — varför stanna vid en reviewer? Kör tre med olika fokus: en på säkerhet, en på korrekthet, en på maintainability. Triangulering.
-  </aside>
-</section>
-
-<section>
-  <h2>Where humans still win</h2>
-  <ul>
-    <li><strong>Intent</strong> — "is this what the customer actually wanted?"</li>
-    <li><strong>Architecture</strong> — "should this even exist?"</li>
-    <li><strong>Politics & ownership</strong> — "whose system is this?"</li>
-    <li><strong>Novel risk</strong> — "we've never done X before; is this safe?"</li>
-    <li><strong>Accountability</strong> — someone signs the change</li>
-    <li><strong>Tacit context</strong> — the things nobody wrote down</li>
-  </ul>
-  <aside class="notes">
-    Intent — AI vet vad koden gör. Det vet inte vad användaren ville. Det är fortfarande vårt jobb.
-    Architecture — "ska den här klassen ens existera?" Det är en helhetsfråga som kräver kontext om var vi är på väg.
-    Accountability — när nåt går fel i produktion behöver det finnas en människa som sa "ja, det här går vi med på". Det är inte tekniskt — det är organisatoriskt.
-    Tacit context — alla saker vi vet om vår kund, vår historik, våra konstigheter, som aldrig skrevs ner. Det är vår orättvisa fördel.
+    Gå igenom raderna parvis. AI:s styrkor är skala och konsistens. Människans styrkor är kontext och ansvar.
+    Konsistens är underskattat — en människa kan ge olika feedback olika dagar, AI ger samma varje gång.
+    "Cheap on every commit" — det är game changern. Code review var flaskhals för att det var dyrt. Nu är det billigt.
+    Accountability — när nåt går fel i produktion behöver det finnas en människa som sa "ja". Det är inte tekniskt — det är organisatoriskt.
   </aside>
 </section>
 
@@ -823,24 +606,6 @@
     Två lager. AI på commit-nivå — fångar buggar, säkerhet, stil. Snabbt, billigt, alltid.
     Människor på PR-nivå — fokuserar på "är det här rätt sak att göra över huvud taget".
     Det här är inte att människor reviewar mindre. Det är att de reviewar SMARTARE. Mindre tid på "du missade en semikolon", mer tid på "har vi tänkt på hur det här interagerar med systemet vi byggde i fjol?"
-  </aside>
-</section>
-
-<section>
-  <h2>What this looks like in practice</h2>
-  <ul>
-    <li>AI review runs on every push — comments inline before a human looks</li>
-    <li>Author addresses AI findings before requesting human review</li>
-    <li>Human reviewer focuses on the "<em>why this, why now</em>" questions</li>
-    <li>For low-risk PRs (small diffs, well-tested code) — AI approval may be enough</li>
-    <li>For high-risk PRs — two AI reviewers + a human, every time</li>
-    <li>Post-merge: AI watches production for the regressions humans miss</li>
-  </ul>
-  <aside class="notes">
-    Konkret förslag. Det här kan vi börja med imorgon.
-    "Author addresses AI findings först" — det här är avgörande. Annars sitter människan och säger samma sak som AI redan sagt. Slöseri.
-    "Low-risk PRs" — vi behöver definiera vad det är. Storlek på diff, område i kodbasen, finns det tester. Risknivå styr nivå av review.
-    "Post-merge AI watching prod" — det här är framtid. Men det är där det är på väg. AI som kontinuerligt övervakar för regressions och föreslår fix.
   </aside>
 </section>
 
@@ -1034,66 +799,29 @@
 </section>
 
 <section>
-  <h2>Tools — Premium seat covers everything</h2>
+  <h2>Tools — your Premium seat, the CLI</h2>
   <div class="two-col">
     <div>
-      <h4>Pick one Claude Code surface</h4>
-      <ul class="tight">
-        <li><strong>CLI</strong>: <code>npm i -g @anthropic-ai/claude-code</code></li>
-        <li><strong>Web</strong>: <code>claude.ai/code</code></li>
-        <li><strong>IDE</strong>: VS Code or JetBrains extension</li>
-      </ul>
-      <p>Then: <code>claude login</code> (or sign in on web)</p>
+      <h4>Install once</h4>
+      <pre><code class="language-text">npm i -g @anthropic-ai/claude-code
+claude login</code></pre>
+      <p>Pick the Sensative workspace. That's it.</p>
     </div>
     <div>
       <h4>What you don't need</h4>
       <ul class="tight">
         <li>An <code>ANTHROPIC_API_KEY</code></li>
-        <li>A Cursor subscription</li>
+        <li>Any other AI tool — Cursor, Copilot, none of them</li>
         <li>A credit card</li>
       </ul>
       <p class="lead">Everything billed against your Premium seat. Stay inside the plan.</p>
     </div>
   </div>
   <aside class="notes">
-    Säg explicit: ingen ska sätta upp en API-nyckel idag. Det ökar kostnaden för bolaget i onödan. Premium-seat täcker allt vi gör.
-    Om någon säger "jag har redan Cursor" — säg "kör med det om du vill, men då räknas det inte mot Premium-budgeten på samma sätt". Helst Claude Code direkt.
-    Web vs CLI vs IDE — egentligen jämbördigt. Web är lättast att komma igång med på en oprövad maskin. CLI för power-users.
-  </aside>
-</section>
-
-<section>
-  <h2>Rules of engagement</h2>
-  <ul>
-    <li><strong>You don't write code.</strong> You direct. The agent codes.</li>
-    <li><strong><code>CLAUDE.md</code> is the contract</strong> — do not diverge from your team's version</li>
-    <li><strong>Branch from <code>main</code>, PR back to <code>main</code></strong> — never push to main directly</li>
-    <li><strong>AI review before human review</strong> — run <code>/code-review</code> first, address findings, then ping a teammate</li>
-    <li><strong>Read teammates' diffs</strong> — out loud if you're stuck</li>
-    <li><strong>Verify by running</strong>, not just by tests</li>
-  </ul>
-  <aside class="notes">
-    De här reglerna är annorlunda från solo-formatet — fokus är på TEAM-disciplin.
-    "AI review before human review" — det här är hjärtat i Part 4. Visa det i praktiken här.
-    "Read teammates' diffs out loud" — geni-tipset. Det fångar fel ögonen missar OCH skapar shared understanding i teamet.
-  </aside>
-</section>
-
-<section>
-  <h2>When you get stuck</h2>
-  <ul>
-    <li><strong>Agent goes off-track</strong> → stop it, paste a one-line course correction, continue</li>
-    <li><strong>Agent loops on the same error</strong> → escape, change tactic ("try a different approach", "show me the actual error first")</li>
-    <li><strong>Diff is wrong</strong> → say "revert the last change, here's what I actually wanted"</li>
-    <li><strong>Merge conflict on your PR</strong> → ask the agent to resolve it. It will. Read the resolution.</li>
-    <li><strong>You don't know what to ask for</strong> → ask the agent: "what are 3 ways we could approach this?"</li>
-    <li><strong>Team blocked on direction</strong> → raise a hand, I come over</li>
-  </ul>
-  <p class="lead">Asking the agent is cheap. Use it.</p>
-  <aside class="notes">
-    Försäkra publiken att fastna är OK. Det är där lärandet sitter.
-    Lade till en specifik rad om merge conflicts — det kommer hända i Phase 2/3 och folk panikerar första gången.
-    "Asking the agent is cheap" — många glömmer att agenten själv är en bra rådgivare.
+    En enda surface idag: Claude Code CLI. Inga andra verktyg.
+    Säg explicit: ingen ska sätta upp en API-nyckel. Det ökar kostnaden för bolaget i onödan. Premium-seat täcker allt vi gör.
+    Om någon redan har Cursor eller Copilot — säg "stäng det idag, kör Claude Code så pratar vi samma språk".
+    Den enklaste vägen: två kommandon, sen är de igång.
   </aside>
 </section>
 
@@ -1144,23 +872,6 @@
     Säg det här innan demos börjar så teamen vet exakt vad de ska visa.
     Punkt 3 (visa PR-listan) är där team-formatet syns. Alla ska ha en PR. Om någon inte har det — diskutera varför, ärligt.
     "Process > product" — det är den enda regeln som verkligen räknas idag.
-  </aside>
-</section>
-
-<section>
-  <h2>What we'll look for</h2>
-  <ul>
-    <li><strong>Team coordination</strong> — how did you split work? did the split survive contact with code?</li>
-    <li><strong>Workflow clarity</strong> — could we copy your process to our real projects tomorrow?</li>
-    <li><strong>Honest failures</strong> — merge conflicts, agent loops, dead ends — the gold</li>
-    <li><strong>Prompt craft</strong> — what made an agent productive vs. spinning?</li>
-    <li><strong>Review dynamics</strong> — what did AI catch on the PR? what did humans catch? what did <em>both</em> miss?</li>
-  </ul>
-  <aside class="notes">
-    Det här är de fem dimensionerna vi diskuterar efter alla demos.
-    "Review dynamics" — den är direkt kopplad till Part 4. Du knyter ihop hela dagen där.
-    "Honest failures" — uppmuntra det. Den grupp som visar mest ärlig "vi körde fast i 40 min på X" är ofta mest värdefull.
-    Avsluta inte presentationen efter den här sliden — gå direkt vidare till första teamets demo.
   </aside>
 </section>
 
