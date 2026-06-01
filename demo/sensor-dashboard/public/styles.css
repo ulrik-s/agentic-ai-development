@@ -34,11 +34,19 @@ main {
   gap: 1.5rem;
 }
 
-#empty-state {
+.card {
   background: var(--card);
-  border: 1px dashed var(--border);
+  border: 1px solid var(--border);
   border-radius: 8px;
-  padding: 3rem;
+  padding: 1.5rem;
+}
+
+.card h2 { margin: 0 0 1rem; font-size: 1.1rem; }
+
+#temp-chart { max-height: 360px; }
+
+#temp-empty {
   text-align: center;
   color: var(--muted);
+  padding: 2rem 0;
 }

@@ -6,6 +6,7 @@
   <title>Sensor Dashboard</title>
   <link rel="stylesheet" href="/styles.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 </head>
 <body>
   <header>
@@ -14,12 +15,13 @@
   </header>
 
   <main>
-    <!-- TODO (issue #2): temperature chart goes here -->
+    <section class="card">
+      <h2>Temperature</h2>
+      <canvas id="temp-chart"></canvas>
+      <p id="temp-empty" hidden>No temperature data yet.</p>
+    </section>
     <!-- TODO (issue #3): humidity chart goes here  -->
     <!-- TODO (issue #4): alerts panel goes here   -->
-    <section id="empty-state">
-      <p>No charts yet. Agents — over to you.</p>
-    </section>
   </main>
 
   <script src="/app.js"></script>
