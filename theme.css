@@ -353,3 +353,42 @@
   height: auto;
   margin: 0.5em auto;
 }
+
+/* Facilitator cheat-sheet 2x2 grid */
+.cheatsheet {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1em;
+  margin-top: 0.8em;
+  text-align: left;
+}
+
+.cheat-card {
+  background: rgba(255,255,255,0.03);
+  border-radius: 8px;
+  padding: 0.7em 0.9em;
+  border-left: 3px solid #78c6ff;
+}
+
+.cheat-card.phase-1 { border-left-color: #78c6ff; }
+.cheat-card.phase-2 { border-left-color: #a9dc76; }
+.cheat-card.phase-3 { border-left-color: #f472b6; }
+.cheat-card.phase-4 { border-left-color: #ffd866; }
+
+.cheat-card h4 {
+  margin: 0 0 0.4em 0;
+  font-size: 0.78em;
+  color: #fff;
+}
+
+.cheat-card .tight li {
+  font-size: 0.65em;
+  padding: 0.1em 0;
+  margin-bottom: 0.15em;
+  line-height: 1.35;
+}
+
+.cheat-card em {
+  color: #ffd866;
+  font-style: italic;
+}
