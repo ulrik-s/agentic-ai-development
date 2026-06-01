@@ -35,7 +35,11 @@
         <stop offset="0" stop-color="#78c6ff"/>
         <stop offset="1" stop-color="#a78bfa"/>
       </linearGradient>
-      <linearGradient id="grad-afternoon" x1="0" x2="1">
+      <linearGradient id="grad-hack" x1="0" x2="1">
+        <stop offset="0" stop-color="#a9dc76"/>
+        <stop offset="1" stop-color="#ffd866"/>
+      </linearGradient>
+      <linearGradient id="grad-demos" x1="0" x2="1">
         <stop offset="0" stop-color="#a78bfa"/>
         <stop offset="1" stop-color="#f472b6"/>
       </linearGradient>
@@ -46,56 +50,69 @@
       <text x="40" y="20" fill="#e8e8e8" font-size="13" text-anchor="middle" font-weight="600">Breakfast</text>
     </g>
     <g transform="translate(140, 65)">
-      <rect width="480" height="30" rx="6" fill="url(#grad-morning)"/>
-      <text x="240" y="20" fill="#0f2027" font-size="14" text-anchor="middle" font-weight="700">Parts 1 — 3   ·   Live demo</text>
+      <rect width="260" height="30" rx="6" fill="url(#grad-morning)"/>
+      <text x="130" y="20" fill="#0f2027" font-size="13" text-anchor="middle" font-weight="700">Talk + live demo</text>
+    </g>
+    <g transform="translate(400, 65)">
+      <rect width="220" height="30" rx="6" fill="url(#grad-hack)"/>
+      <text x="110" y="20" fill="#0f2027" font-size="13" text-anchor="middle" font-weight="700">Hands-on (start)</text>
     </g>
     <g transform="translate(620, 65)">
       <rect width="160" height="30" rx="6" fill="#3a4a5e"/>
       <text x="80" y="20" fill="#e8e8e8" font-size="13" text-anchor="middle" font-weight="600">Lunch</text>
     </g>
     <g transform="translate(780, 65)">
-      <rect width="260" height="30" rx="6" fill="url(#grad-afternoon)"/>
-      <text x="130" y="20" fill="#0f2027" font-size="14" text-anchor="middle" font-weight="700">Part 4   ·   Discussion</text>
+      <rect width="180" height="30" rx="6" fill="url(#grad-hack)"/>
+      <text x="90" y="20" fill="#0f2027" font-size="13" text-anchor="middle" font-weight="700">Hands-on (finish)</text>
+    </g>
+    <g transform="translate(960, 65)">
+      <rect width="80" height="30" rx="6" fill="url(#grad-demos)"/>
+      <text x="40" y="20" fill="#0f2027" font-size="12" text-anchor="middle" font-weight="700">Demos</text>
     </g>
     <g font-family="JetBrains Mono, monospace" font-size="13" fill="#8fb4d9" text-anchor="middle">
       <text x="60"   y="125">8:30</text>
       <text x="140"  y="125">9:00</text>
+      <text x="400"  y="125">10:30</text>
       <text x="620"  y="125">12:00</text>
       <text x="780"  y="125">13:00</text>
+      <text x="960"  y="125">14:00</text>
       <text x="1040" y="125">14:30</text>
     </g>
     <g stroke="#8fb4d9" stroke-width="1">
       <line x1="60"   y1="100" x2="60"   y2="108"/>
       <line x1="140"  y1="100" x2="140"  y2="108"/>
+      <line x1="400"  y1="100" x2="400"  y2="108"/>
       <line x1="620"  y1="100" x2="620"  y2="108"/>
       <line x1="780"  y1="100" x2="780"  y2="108"/>
+      <line x1="960"  y1="100" x2="960"  y2="108"/>
       <line x1="1040" y1="100" x2="1040" y2="108"/>
     </g>
   </svg>
   <div class="schedule">
     <div>
-      <h4>Morning</h4>
+      <h4>Morning — concepts &amp; demo</h4>
       <ul class="tight">
-        <li><code>9:00</code> Part 1 — LLMs, a shared mental model</li>
-        <li><code>9:30</code> Part 2 — From LLM to agent</li>
-        <li><code>10:30</code> Break</li>
-        <li><code>10:45</code> Part 3 — Agentic AI in our org + <strong>live demo</strong></li>
+        <li><code>9:00</code> Parts 1 + 2 — LLMs &amp; agents</li>
+        <li><code>9:30</code> Part 3 — agentic in our org + <strong>live demo</strong></li>
+        <li><code>10:00</code> Part 4 — code review provocation</li>
+        <li><code>10:30</code> Form groups, pick project, set up</li>
       </ul>
     </div>
     <div>
-      <h4>Afternoon</h4>
+      <h4>Afternoon — your turn</h4>
       <ul class="tight">
-        <li><code>13:00</code> Part 4 — Code review: do we still need humans?</li>
-        <li><code>14:00</code> Discussion + wrap-up</li>
-        <li><code>14:30</code> End</li>
+        <li><code>11:00</code> Hands-on building (4–5 groups)</li>
+        <li><code>12:00</code> Lunch</li>
+        <li><code>13:00</code> Continue building + prep demos</li>
+        <li><code>14:00</code> Group demos — ~5 min each</li>
       </ul>
     </div>
   </div>
   <aside class="notes">
-    Visa schemat. Säg: "det här är en workshop, inte en föreläsning — jag förväntar mig att ni avbryter, säger emot, ger exempel".
-    Markera lunch och paus — folk vill veta när de får mat och kaffe.
-    "Tiderna är ungefärliga. Om vi fastnar i bra diskussion kring något — vi tar tid där och kortar något annat. Diskussionsdelen är fri."
-    Del 3 har en LIVE-DEMO mitt i — jag kommer att starta tre agenter parallellt och låta dem bygga en sensor-dashboard medan vi pratar.
+    Visa schemat. Säg explicit: "den här dagen handlar mer om att DU ska prova än att jag ska prata. Förmiddagen är min — eftermiddagen är er."
+    Förmiddagen är medvetet kondenserad. Inga djupa diskussioner då — vi sparar diskussion till efter demos.
+    "Vid 10:30 delar vi in grupper och ni får börja sätta upp er. Lunch 12. Vid 14:00 visar varje grupp upp vad de byggt."
+    Markera tydligt: lunch 12:00, demos 14:00. Folk vill veta deadlines.
   </aside>
 </section>
 
@@ -844,54 +861,229 @@
   </aside>
 </section>
 
-<!-- ========== PART 5: Close ========== -->
-<section data-background-gradient="linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)">
+<!-- ========== PART 5: Hands-on ========== -->
+<section data-background-gradient="linear-gradient(135deg, #1f3b1f 0%, #2d5a2d 100%)">
   <svg class="divider-hero" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <g>
-      <path d="M 110 50 q 0 -30 30 -30 h 130 q 30 0 30 30 v 50 q 0 30 -30 30 h -90 l -30 25 v -25 h -10 q -30 0 -30 -30 z"
-            fill="#1a2b40" stroke="#78c6ff" stroke-width="2"/>
-      <circle cx="170" cy="65" r="3" fill="#78c6ff"/>
-      <circle cx="190" cy="65" r="3" fill="#78c6ff"/>
-      <circle cx="210" cy="65" r="3" fill="#78c6ff"/>
+    <g fill="none" stroke="#a9dc76" stroke-width="2">
+      <rect x="80"  y="60" width="80" height="80" rx="10"/>
+      <rect x="180" y="60" width="80" height="80" rx="10"/>
+      <rect x="280" y="60" width="80" height="80" rx="10"/>
+      <rect x="380" y="60" width="80" height="80" rx="10"/>
+      <rect x="480" y="60" width="80" height="80" rx="10"/>
     </g>
-    <g>
-      <path d="M 290 110 q 0 -30 30 -30 h 160 q 30 0 30 30 v 50 q 0 30 -30 30 h -110 l -30 25 v -25 h -20 q -30 0 -30 -30 z"
-            fill="#1a2b40" stroke="#a78bfa" stroke-width="2"/>
-      <circle cx="360" cy="125" r="3" fill="#a78bfa"/>
-      <circle cx="380" cy="125" r="3" fill="#a78bfa"/>
-      <circle cx="400" cy="125" r="3" fill="#a78bfa"/>
+    <g fill="#a9dc76" font-size="11" font-family="JetBrains Mono, monospace" text-anchor="middle" font-weight="700">
+      <text x="120" y="105">G1</text>
+      <text x="220" y="105">G2</text>
+      <text x="320" y="105">G3</text>
+      <text x="420" y="105">G4</text>
+      <text x="520" y="105">G5</text>
     </g>
   </svg>
   <h2 class="part-label">Part 5</h2>
-  <h1>Discussion</h1>
+  <h1>Your turn — hands-on</h1>
   <aside class="notes">
-    Öppna golvet. Du kan visa nästa slide med frågor som seed, eller låta diskussionen flöda fritt först.
-    Om det blir tyst — peka på en specifik person med "du jobbar mest med X, hur skulle det här påverka det?"
+    Detta är skiftet — från "lyssna på mig" till "prova själv".
+    Säg: "förmiddagens hela poäng var att ge er konceptuell grund. Det är inte lyssnandet som lär er det här — det är att göra. Nästa tre timmar är ni föraren."
+    Räkna med 5 min energi-paus efter Part 4 innan du går in i den här delen.
   </aside>
 </section>
 
 <section>
-  <h2>Questions worth chewing on</h2>
-  <ul class="questions">
-    <li>Which tasks in <em>your</em> daily work would you give to an agent tomorrow?</li>
-    <li>What would have to be true for you to merge an AI-only-reviewed PR?</li>
-    <li>What does our team's <code>CLAUDE.md</code> need to say?</li>
-    <li>If reviewing becomes the bottleneck — do we hire more reviewers, or more agents?</li>
-    <li>What's the failure mode we're most afraid of — and how would we notice?</li>
+  <h2>The brief</h2>
+  <ul>
+    <li><strong>4–5 groups</strong>, 2–4 people each. We pick groups in 5 min.</li>
+    <li>Build something <strong>demoable in 5 minutes</strong> by 14:00.</li>
+    <li>You direct. Claude Code builds. Read every diff.</li>
+    <li>One repo per group. Push to GitHub so we can see what you did.</li>
+    <li>At 14:00 each group shows: <em>what you built</em> + <em>how you built it</em>.</li>
+  </ul>
+  <p class="lead">The point is not the app. The point is the workflow.</p>
+  <aside class="notes">
+    Var tydlig med "demoable in 5 minutes" — det förhindrar att grupper bygger för stort.
+    "Point is the workflow" — upprepa det. Det är inte en hackathon med vinnare. Det är att alla får KÄNNA hur det är att vara dirigent.
+    Förklara: under demon ska de visa både RESULTATET och PROCESSEN. Vilka prompts användes? Vilka problem dök upp? Vad funkade inte?
+  </aside>
+</section>
+
+<section>
+  <h2>Pick a project</h2>
+  <div class="two-col">
+    <div>
+      <h4>Starter ideas</h4>
+      <ul class="tight">
+        <li><strong>A</strong> · CLI: <code>git-tldr</code> — summarize last N commits in plain English</li>
+        <li><strong>B</strong> · Tiny issue tracker — kanban with three columns and drag-drop</li>
+        <li><strong>C</strong> · Expense splitter — "I paid X for the dinner, who owes what?"</li>
+        <li><strong>D</strong> · Pomodoro timer with team sync — websockets demo</li>
+        <li><strong>E</strong> · Public-API mashup — pick an API, transform, display nicely</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Or freestyle</h4>
+      <p>Something useful for <em>your</em> daily work. Internal tool. Personal scratch app. Anything you've wanted but never had time to build.</p>
+      <p class="lead">Constraint: starts from an empty repo at 11:00.<br>Demoable at 14:00.</p>
+    </div>
+  </div>
+  <aside class="notes">
+    Ge grupperna 5 min att välja. Inte mer. Om det tar längre sätter du dem på en idé.
+    Ditt jobb under val: gå runt och säg "för stort" om någon vill bygga en full ERP. Riktigt scope = kan slutföras till 14:00 av 3 personer + AI.
+    Freestyle är OK men favorisera starter-idéer om gruppen är osäker. Friktion-fritt = mer tid på själva ARBETET.
+  </aside>
+</section>
+
+<section>
+  <h2>Rules of engagement</h2>
+  <ul>
+    <li><strong>The driver does not write code.</strong> The driver directs.</li>
+    <li><strong>Rotate the driver</strong> every 30 minutes — everyone gets the seat.</li>
+    <li><strong>Write a <code>CLAUDE.md</code> first.</strong> 5 minutes upfront saves an hour later.</li>
+    <li><strong>Plan, then implement.</strong> Don't let the agent code blind.</li>
+    <li><strong>Read every diff</strong> before approving. Out loud, as a group.</li>
+    <li><strong>Verify by running</strong> — not just by tests passing.</li>
   </ul>
   <aside class="notes">
-    Fem frågor. Du behöver inte gå igenom alla — välj de som triggar mest engagemang.
-    Den andra frågan — "what would have to be true" — är den mest produktiva. Den tvingar folk att bli konkreta om sina tvivel.
-    Sista frågan — failure mode — är där rädslorna kommer fram. Bra ställe att avsluta så vi inte gick hem på en överoptimistisk ton.
+    Det här är de viktigaste reglerna. Repetera dem.
+    "Driver doesn't write code" — det är OVANT. Folk kommer instinktivt ta tangentbordet. Stoppa dem.
+    "Rotate every 30 min" — gör att alla får känna både rollerna. Annars riskerar en person ta över hela demon.
+    "Read every diff out loud" — geni-tipset. När man läser kod högt fångar man fel som ögonen missar.
+  </aside>
+</section>
+
+<section>
+  <h2>Tools — Premium seat covers everything</h2>
+  <div class="two-col">
+    <div>
+      <h4>Pick one Claude Code surface</h4>
+      <ul class="tight">
+        <li><strong>CLI</strong>: <code>npm i -g @anthropic-ai/claude-code</code></li>
+        <li><strong>Web</strong>: <code>claude.ai/code</code></li>
+        <li><strong>IDE</strong>: VS Code or JetBrains extension</li>
+      </ul>
+      <p>Then: <code>claude login</code> (or sign in on web)</p>
+    </div>
+    <div>
+      <h4>What you don't need</h4>
+      <ul class="tight">
+        <li>An <code>ANTHROPIC_API_KEY</code></li>
+        <li>A Cursor subscription</li>
+        <li>A credit card</li>
+      </ul>
+      <p class="lead">Everything billed against your Premium seat. Stay inside the plan.</p>
+    </div>
+  </div>
+  <aside class="notes">
+    Säg explicit: ingen ska sätta upp en API-nyckel idag. Det ökar kostnaden för bolaget i onödan. Premium-seat täcker allt vi gör.
+    Om någon säger "jag har redan Cursor" — säg "kör med det om du vill, men då räknas det inte mot Premium-budgeten på samma sätt". Helst Claude Code direkt.
+    Web vs CLI vs IDE — egentligen jämbördigt. Web är lättast att komma igång med på en oprövad maskin.
+  </aside>
+</section>
+
+<section>
+  <h2>Setup checklist (~10 min)</h2>
+  <ol class="numbered">
+    <li>Install Claude Code (or open <code>claude.ai/code</code>)</li>
+    <li><code>claude login</code> — pick the Sensative workspace</li>
+    <li>Create a new GitHub repo for your group (private is fine)</li>
+    <li>Clone it locally, <code>cd</code> into it</li>
+    <li>Write a one-page <code>CLAUDE.md</code> — stack, run commands, conventions</li>
+    <li>Open the first prompt with: "Read CLAUDE.md, then plan how to build X. Don't write code yet."</li>
+  </ol>
+  <aside class="notes">
+    Det här är vad varje grupp ska göra mellan 10:30 och 11:00.
+    Hjälp dem genom det. Gå runt, kolla att login funkar, att de skrivit CLAUDE.md. CLAUDE.md är där folk slarvar — och de slarvet betalar sig senare.
+    "Don't write code yet" — den första prompten. Den TVINGAR planeringssteget. Annars hoppar agenten direkt in i kod, och då fastnar man.
+  </aside>
+</section>
+
+<section>
+  <h2>When you get stuck</h2>
+  <ul>
+    <li><strong>Agent goes off-track</strong> → stop it, paste a one-line course correction, continue</li>
+    <li><strong>Agent loops on the same error</strong> → escape, change tactic ("try a different approach", "show me the actual error first")</li>
+    <li><strong>Diff is wrong</strong> → say "revert the last change, here's what I actually wanted"</li>
+    <li><strong>You don't know what to ask for</strong> → ask the agent itself: "what are 3 ways we could approach this?"</li>
+    <li><strong>Group stuck on direction</strong> → raise a hand, I come over</li>
+  </ul>
+  <p class="lead">Asking the agent is cheap. Use it.</p>
+  <aside class="notes">
+    Försäkra publiken att fastna är OK. Det är där lärandet sitter.
+    "Asking the agent is cheap" — många glömmer att agenten själv är en bra rådgivare när man inte vet vad man vill. "Föreslå 3 sätt att lösa det här" är en kraftfull prompt.
+    Berätta att du går runt och hjälper aktivt. Ingen är ensam.
+  </aside>
+</section>
+
+<!-- ========== PART 6: Group demos ========== -->
+<section data-background-gradient="linear-gradient(135deg, #2d1a4a 0%, #4a1f5e 100%)">
+  <svg class="divider-hero" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <g stroke="#f472b6" stroke-width="2" fill="#1a2b40">
+      <rect x="220" y="50" width="160" height="100" rx="8"/>
+      <line x1="220" y1="70" x2="380" y2="70"/>
+    </g>
+    <g fill="#f472b6">
+      <circle cx="232" cy="60" r="3"/>
+      <circle cx="244" cy="60" r="3"/>
+      <circle cx="256" cy="60" r="3"/>
+    </g>
+    <g fill="none" stroke="#a78bfa" stroke-width="1.5">
+      <rect x="245" y="85" width="110" height="10" rx="2"/>
+      <rect x="245" y="105" width="80" height="10" rx="2"/>
+      <rect x="245" y="125" width="100" height="10" rx="2"/>
+    </g>
+    <g fill="#a9dc76">
+      <circle cx="100" cy="100" r="10"/>
+      <circle cx="130" cy="100" r="10"/>
+      <circle cx="470" cy="100" r="10"/>
+      <circle cx="500" cy="100" r="10"/>
+    </g>
+  </svg>
+  <h2 class="part-label">14:00</h2>
+  <h1>Group demos</h1>
+  <aside class="notes">
+    Du är nu i moderator-roll. Hålltider strikt — 5 min per grupp + 2 min frågor.
+    Använd timer synligt så grupperna ser den.
+  </aside>
+</section>
+
+<section>
+  <h2>Demo format — 5 minutes per group</h2>
+  <ol class="numbered">
+    <li><strong>Show the app</strong> — run it, demonstrate what it does (~1 min)</li>
+    <li><strong>Show your <code>CLAUDE.md</code></strong> — what context did you give the agent? (~1 min)</li>
+    <li><strong>Show one prompt that worked</strong> — and why you think it worked (~1 min)</li>
+    <li><strong>Show one prompt that failed</strong> — and what you did next (~1 min)</li>
+    <li><strong>One thing you'd do differently</strong> next time (~1 min)</li>
+  </ol>
+  <p class="lead">Process &gt; product. We learn more from your prompts than your code.</p>
+  <aside class="notes">
+    Säg det här innan demos börjar så grupperna vet exakt vad de ska visa.
+    Strukturen tvingar fram refletion — utan den blir det bara "titta vad vi byggde".
+    "Process > product" — det är den enda regeln som verkligen räknas idag.
+  </aside>
+</section>
+
+<section>
+  <h2>What we'll look for</h2>
+  <ul>
+    <li><strong>Workflow clarity</strong> — could we copy your process tomorrow?</li>
+    <li><strong>Honest failures</strong> — the dead ends teach more than the wins</li>
+    <li><strong>Prompt craft</strong> — what made an agent productive vs. spinning?</li>
+    <li><strong>The driver/director skill</strong> — when did you say no, redirect, ask for a plan?</li>
+    <li><strong>Surprises</strong> — what did the agent do better than you expected? Worse?</li>
+  </ul>
+  <aside class="notes">
+    Det här är de fem dimensionerna vi diskuterar efter alla demos.
+    "Honest failures" — uppmuntra det. Den grupp som visar mest ärlig "vi körde fast i 40 min på X" är ofta mest värdefull.
+    Avsluta inte presentationen efter den här sliden — gå direkt vidare till första gruppens demo.
   </aside>
 </section>
 
 <section data-background-gradient="linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)">
   <h1 class="thanks">Thank you</h1>
-  <p class="byline">Questions, pushback, war stories — all welcome.</p>
+  <p class="byline">Slides &amp; demo repo: <code>github.com/ulrik-s/agentic-ai-development</code></p>
   <aside class="notes">
-    Tacka publiken. Säg var slidesen finns (GitHub Pages-URL).
-    Erbjud follow-up: "om någon vill prova ett agent-verktyg och inte vet hur man kommer igång, hör av er — jag sätter mig 30 min med er."
+    Sista sliden. Visa GitHub-URLen så folk kan klona repot om de vill experimentera vidare.
+    Erbjud follow-up: "om någon vill köra agentic på sitt projekt nästa vecka och inte vet hur de börjar — boka in 30 min med mig".
+    Tacka för engagemanget. Det är en lång dag, särskilt för dem som inte gjort hands-on med Claude Code förut.
   </aside>
 </section>
 
