@@ -128,12 +128,31 @@ Watch the agent fix it. This is the moment the audience understands:
 - **Merge conflict on a PR** — *"PR #N has a conflict. Rebase the
   branch onto main and resolve."*
 
-## 7 · After the demo
+## 7 · After the demo — reset for the next run
 
-Cleanup is handled by the orchestrator — ask it to tear down:
+One command wipes everything an agent run leaves behind:
 
+```sh
+bash demo/reset.sh
 ```
-We're done. Stop the dev server, delete all worktrees you created, and
-delete the local feature branches. Don't delete merged commits or
-remote branches — I'll do that myself.
+
+(or from inside `demo/sensor-dashboard/`: `npm run reset`)
+
+It handles all six lingering pieces:
+
+1. Kills any process holding port 3000 (nodemon from the last run)
+2. Removes git worktrees the agents created
+3. Deletes local `demo/*` branches
+4. Closes open demo PRs on GitHub (`gh` required)
+5. Deletes remote `demo/*` branches
+6. Force-resets `main` to the `demo-clean` tag and pushes
+
+Idempotent — safe to run twice, safe to run when nothing's lingering.
+
+**One-time setup before the very first run** (already done in this
+repo, but if you ever move the "clean" baseline):
+
+```sh
+git tag -f demo-clean main
+git push --force origin demo-clean
 ```

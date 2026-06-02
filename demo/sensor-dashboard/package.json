@@ -8,6 +8,7 @@
     "start": "nodemon server.js",
     "start:once": "node server.js",
     "seed": "node data/seed.js",
+    "reset": "bash ../reset.sh",
     "test": "echo \"no tests yet — see issue #5\" && exit 0"
   },
   "dependencies": {
