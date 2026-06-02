@@ -34,6 +34,15 @@ main {
   gap: 1.5rem;
 }
 
+#temperature-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+#temperature-card h2 { margin: 0 0 1rem; font-size: 1.1rem; }
+
 #empty-state {
   background: var(--card);
   border: 1px dashed var(--border);
