@@ -19,7 +19,12 @@ file under `demo/issues/` first.
 - **Data:** `demo/sensor-dashboard/data/readings.json`. Regenerate with
   `npm run seed`.
 - **Run:** `cd demo/sensor-dashboard && npm install && npm start`.
-  Server listens on port 3000.
+  Server listens on port 3000. `npm start` uses **nodemon** — it restarts
+  automatically when you edit `server.js` or files under `public/`.
+- **Live reload:** the dashboard polls `/api/version` every 2 s and
+  reloads the page whenever any file in `public/` changes or the server
+  restarts. Means the audience sees your work appear without anyone
+  hitting F5.
 - **Tests:** Playwright when issue #5 lands. `npm test` runs them.
 - **Style:** Keep code small and readable. Demo code, not production code.
   No comments unless the *why* is non-obvious. One commit per logical

@@ -5,11 +5,15 @@
   "description": "Minimal sensor dashboard skeleton — agents fill in the rest",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "nodemon server.js",
+    "start:once": "node server.js",
     "seed": "node data/seed.js",
     "test": "echo \"no tests yet — see issue #5\" && exit 0"
   },
   "dependencies": {
     "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
   }
 }
