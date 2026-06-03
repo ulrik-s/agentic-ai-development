@@ -36,7 +36,10 @@ file under `demo/issues/` first.
   more. Don't add features for hypothetical futures.
 - Verify your work by actually running the server and hitting the
   endpoint / loading the page — type check and tests are not enough.
-- Open a PR against `main` with a one-paragraph summary.
+- **No PRs.** Push your work straight to `main`:
+  `git push origin HEAD:main`. If the push is rejected because someone
+  landed first, `git pull --rebase origin main`, resolve any conflicts
+  yourself, re-verify, and push again until it lands. Never force-push.
 
 ## Out of scope
 

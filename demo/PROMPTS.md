@@ -1,136 +1,173 @@
-# Demo prompts — one prompt, everything happens
+# Demo prompts — a self-cleaning fleet
 
-Open this on a second monitor for the demo. The whole live-coding demo
-is **one terminal, one prompt** — Claude orchestrates the rest.
+Open this on a second monitor. The whole live demo runs from **one
+`claude agents` fleet view**: you dispatch background agents, they do
+everything else — including cleaning up whatever the previous run left
+behind, as the very first step.
+
+No PRs anywhere. Every agent pushes straight to `main` and resolves its
+own rebase conflicts. The fleet view is the spectacle: parallel
+sessions, live status lines, zero hands on the code.
 
 ## 0 · Once, before the demo
 
-Nothing. No worktrees to create, no servers to start. The orchestrator
-prompt does everything.
+- `gh auth status` succeeds — the cleanup step needs it
+- A browser tab on <http://localhost:3000> — it comes alive when the
+  setup agent starts the server
 
-Just have your browser tabs ready:
-
-- <http://localhost:3000> — the dashboard (will be started by the agent)
-- <https://github.com/ulrik-s/agentic-ai-development/issues> — the issues
-
-## 1 · The orchestrator prompt
-
-Open a terminal in the repo root and run:
+## 1 · Start the fleet view
 
 ```sh
-claude
+claude agents --dangerously-skip-permissions
 ```
 
-Then paste this single prompt:
+The flag is what makes the demo autonomous: no permission prompt can
+stall an agent mid-show. Acceptable here — own repo, own machine, demo
+code.
+
+## 2 · Dispatch 1 — setup agent (cleanup happens FIRST)
+
+Dispatch a new session with this prompt:
 
 ```
-You are the orchestrator for a live demo. Do these things in parallel.
+You are the setup agent for a live demo. Work in the repo root — do
+NOT create a worktree. In order:
 
-STEP 1 — Start the dev server in the background.
-Run: `cd demo/sensor-dashboard && npm install && npm start` as a
-background process. The server uses nodemon, so it restarts when files
-change. The dashboard at http://localhost:3000 will auto-reload when
-the browser detects a version bump. Do not block waiting for the server;
-move on as soon as it's up.
-
-STEP 2 — Spawn three parallel agents using the Task tool with
-isolation="worktree". Send them in a single message so they run
-concurrently. Do NOT do their work yourself — delegate.
-
-  Agent A · issue #1 backend endpoint
-    Read CLAUDE.md and demo/issues/01-readings-endpoint.md.
-    Plan, implement, commit, push branch, open a PR against main.
-    Do not touch files outside server.js.
-
-  Agent B · issue #2 temperature chart
-    Read CLAUDE.md and demo/issues/02-temperature-chart.md.
-    The endpoint from issue #1 may not exist yet — if not, mock the
-    response shape described in the issue file.
-    Plan, implement, commit, push branch, open a PR. Don't add a second
-    auto-reload mechanism — public/app.js already polls /api/version.
-
-  Agent C · issue #5 Playwright e2e
-    Read CLAUDE.md and demo/issues/05-e2e-tests.md.
-    Add Playwright as a dev dependency. Write tests that pass against
-    today's main (health, dashboard renders, no console errors).
-    Skip tests for endpoints that don't exist yet.
-    Plan, implement, commit, push branch, open a PR.
-
-STEP 3 — While agents work, monitor and report.
-When each agent finishes, give me a one-line status. Don't wait for
-them sequentially — they should all run at once.
-
-STEP 4 — When I say "review them", do this:
-For each open PR, run /code-review on it. Post the findings as inline
-comments. Tell me which PR you'd merge first.
+1. Run `bash demo/reset.sh` and show me its output. It wipes
+   everything a previous run left behind (server, autopull loop,
+   worktrees, branches, PRs) and resets main to the demo-clean tag.
+2. Start the dev server in the background:
+   `cd demo/sensor-dashboard && npm install && npm start`
+3. From the repo root, start `bash demo/autopull.sh` in the
+   background. It keeps this checkout synced with origin/main so the
+   dashboard updates as agents push.
+4. When http://localhost:3000/api/health returns ok, report
+   "dashboard live". Leave both processes running.
 ```
 
-## 2 · While the agents work — narrate
+While it runs, narrate: *"Step one of the demo is the demo cleaning up
+after the last demo. Nothing here assumes a clean room."*
 
-Talk for ~2 minutes:
+## 3 · Dispatch 2–5 — four feature agents
 
-- *"One prompt. Four agents — three CLI subagents in isolated git
-  worktrees, one GitHub-Action agent we'll add in a moment."*
-- *"They only know what's in CLAUDE.md and their own issue file. I'm
-  not coding anything."*
-- *"The dashboard at localhost:3000 will reload itself as features
-  land. Nobody is touching that browser."*
+Dispatch each of these as its own session, back to back. Don't wait
+between them — the point is that they run at once.
 
-## 3 · Fire the GitHub Action (Agent 4)
-
-In GitHub, open issue #4 (alerts) and add this comment:
+**Agent A · issue #1, readings endpoint**
 
 ```
-@claude implement this issue.
-
-Read CLAUDE.md first. Plan, then implement on a feature branch and
-open a PR against main. Don't add page-refresh logic — public/app.js
-already polls /api/version.
+Read CLAUDE.md and demo/issues/01-readings-endpoint.md. Work in an
+isolated git worktree. Implement the issue, meeting its acceptance
+criteria — no more. Verify by running the server in your worktree
+(PORT=3101 npm run start:once) and exercising the endpoint with curl.
+Commit, then push straight to main: git push origin HEAD:main. If the
+push is rejected, git pull --rebase origin main, resolve conflicts
+yourself, re-verify, and push again until it lands. Never force-push.
+Do not open a PR. Report one line when your work is on main.
 ```
 
-Switch to the Actions tab so the audience sees the workflow run.
-
-## 4 · Review and merge
-
-When the agents report PRs are open, paste this single message into the
-orchestrator session:
+**Agent B · issue #2, temperature chart**
 
 ```
-review them
+Read CLAUDE.md and demo/issues/02-temperature-chart.md. Work in an
+isolated git worktree. The /api/readings endpoint may not be on main
+yet — if so, code against the response shape in the issue file; it
+will land while you work. Do not add any reload mechanism;
+public/app.js already polls /api/version. Verify with the server in
+your worktree (PORT=3102 npm run start:once). Commit, then push
+straight to main: git push origin HEAD:main. If rejected, git pull
+--rebase origin main, resolve conflicts yourself, re-verify, push
+again until it lands. Never force-push. Do not open a PR. Report one
+line when your work is on main.
 ```
 
-That triggers Step 4 from the original prompt — code-review on every
-PR, with a recommended merge order.
+**Agent C · issue #4, threshold alerts**
 
-Merge the first PR via GitHub UI. The browser at localhost:3000 will
-notice the next time nodemon restarts (or when public/ changes) and
-reload itself.
+```
+Read CLAUDE.md and demo/issues/04-alerts.md. Work in an isolated git
+worktree. Alert state reads data/readings.json directly, so don't
+block on other agents' work. Do not add any reload mechanism. Verify
+with the server in your worktree (PORT=3104 npm run start:once).
+Commit, then push straight to main: git push origin HEAD:main. If
+rejected, git pull --rebase origin main, resolve conflicts yourself,
+re-verify, push again until it lands. Never force-push. Do not open a
+PR. Report one line when your work is on main.
+```
 
-## 5 · Course-correct on stage (optional but powerful)
+**Agent D · issue #5, Playwright e2e**
 
-Pick any open PR and comment on it:
+```
+Read CLAUDE.md and demo/issues/05-e2e-tests.md. Work in an isolated
+git worktree. Configure Playwright's webServer on port 3105 so you
+never collide with the live dashboard on 3000. Only assert endpoints
+that exist on main at the moment you push — rebase first, check, keep
+the suite green. Commit, then push straight to main: git push origin
+HEAD:main. If rejected, git pull --rebase origin main, resolve
+conflicts yourself, re-verify, push again until it lands. Never
+force-push. Do not open a PR. Report one line when your work is on
+main.
+```
+
+Issue #3 (humidity chart) stays in reserve — see step 6.
+
+## 4 · While the fleet works — narrate
+
+- *"Five agents. One cleaned the stage, four are building. I haven't
+  opened an editor."*
+- *"They all push to main. When two land at once, the loser rebases,
+  resolves the conflict itself, and pushes again. Watch the status
+  lines."*
+- *"The dashboard tab updates itself — pull, nodemon restart, browser
+  reload. Nobody touches that browser."*
+
+## 5 · Dispatch 6 — reviewer agent
+
+When the feature agents report done, dispatch:
+
+```
+You are the reviewer. The day's work is everything on main since the
+demo-clean tag: git diff demo-clean..main. Review it for real
+problems — bugs, console errors, violations of CLAUDE.md conventions.
+Fix what you find in an isolated worktree, verify, and push fixes
+straight to main (rebase and retry if rejected, never force-push, no
+PRs). If demo/sensor-dashboard has a test suite now, run npm test and
+make it green. Report each finding as one line: file — problem — fix.
+```
+
+Narrate: *"Reviewing is also delegated. My job is reading these
+one-liners and deciding if I agree."*
+
+## 6 · Course-correct on stage (optional but powerful)
+
+Open Agent B's finished session and send:
 
 ```
 The chart line should be 2 pixels wide. Use a softer pastel palette,
-not saturated. Push the fix.
+not saturated. Push the fix to main.
 ```
 
-Watch the agent fix it. This is the moment the audience understands:
-*directing* is the skill.
+Or, if there's time, dispatch a fresh agent on the spare issue:
 
-## 6 · If something breaks
+```
+Read CLAUDE.md and demo/issues/03-humidity-chart.md. Same rules as
+before: isolated worktree, verify on PORT=3103, push straight to
+main, rebase on rejection, no PR.
+```
 
-- **Server died and nodemon didn't catch it** — in the orchestrator
-  session: *"the server seems down. Check the background process and
-  restart it if needed."*
-- **An agent went off-track** — *"agent A is doing the wrong thing.
-  Tell it to revert the last edit and re-plan, in three options."*
-- **Merge conflict on a PR** — *"PR #N has a conflict. Rebase the
-  branch onto main and resolve."*
+This is the moment the audience understands: *directing* is the skill.
 
-## 7 · After the demo — reset for the next run
+## 7 · If something breaks
 
-One command wipes everything an agent run leaves behind:
+- **Dashboard frozen** — message the setup agent: *"Are the server and
+  the autopull loop still running? Restart whatever died."*
+- **An agent stuck in a rebase loop** — message it: *"Show me the
+  conflict. Take both sides where possible, re-verify, push."*
+- **An agent went off-track** — *"Stop. Revert your last edit and
+  re-plan in three options."*
+- **Total meltdown** — run `bash demo/reset.sh` yourself, restart from
+  step 2. It's idempotent and takes seconds.
+
+## 8 · After the demo — reset for the next run
 
 ```sh
 bash demo/reset.sh
@@ -138,21 +175,22 @@ bash demo/reset.sh
 
 (or from inside `demo/sensor-dashboard/`: `npm run reset`)
 
-It handles all six lingering pieces:
+It handles every lingering piece:
 
-1. Kills any process holding port 3000 (nodemon from the last run)
-2. Removes git worktrees the agents created
-3. Deletes local `demo/*` branches
-4. Closes open demo PRs on GitHub (`gh` required)
-5. Deletes remote `demo/*` branches
+1. Kills the dev server (port 3000) and the autopull loop
+2. Removes all leftover git worktrees (except the one it runs from)
+3. Deletes local `demo/*`, `issue-*`, `claude/*`, `worktree-*` branches
+4. Closes any open PRs from those branches (`gh` required)
+5. Deletes the matching remote branches
 6. Force-resets `main` to the `demo-clean` tag and pushes
 
 Idempotent — safe to run twice, safe to run when nothing's lingering.
+It's the same script the setup agent runs at the start of every demo,
+so even a skipped reset heals itself next time.
 
-**One-time setup before the very first run** (already done in this
-repo, but if you ever move the "clean" baseline):
+**Whenever the clean baseline changes** (slides, demo docs, this file),
+move the tag:
 
 ```sh
-git tag -f demo-clean main
-git push --force origin demo-clean
+git tag -f demo-clean main && git push -f origin demo-clean
 ```
