@@ -10,6 +10,84 @@ async function checkHealth() {
   }
 }
 
+const SENSOR_COLORS = {
+  'office-1': '#2563eb',
+  'office-2': '#16a34a',
+  'lobby': '#f59e0b',
+};
+
+let temperatureChart = null;
+
+async function loadTemperatureChart() {
+  try {
+    const r = await fetch('/api/readings?type=temperature&limit=2000');
+    if (!r.ok) return; // endpoint not ready yet — leave the empty state in place
+    const { readings } = await r.json();
+    renderTemperatureChart(readings);
+  } catch (err) {
+    console.error('temperature chart load failed', err);
+  }
+}
+
+function renderTemperatureChart(readings) {
+  // Sensors share timestamps, so use a category x-axis keyed on the sorted
+  // set of timestamps — no date adapter needed.
+  const labels = [...new Set(readings.map((d) => d.ts))].sort();
+
+  const bySensor = new Map();
+  for (const d of readings) {
+    if (!bySensor.has(d.sensor_id)) bySensor.set(d.sensor_id, new Map());
+    bySensor.get(d.sensor_id).set(d.ts, d.value);
+  }
+
+  const datasets = [...bySensor.entries()].map(([sensor, points]) => ({
+    label: sensor,
+    data: labels.map((ts) => points.get(ts) ?? null),
+    borderColor: SENSOR_COLORS[sensor] || '#6b7280',
+    backgroundColor: SENSOR_COLORS[sensor] || '#6b7280',
+    tension: 0.3,
+    pointRadius: 0,
+    spanGaps: true,
+  }));
+
+  if (temperatureChart) {
+    temperatureChart.data.labels = labels;
+    temperatureChart.data.datasets = datasets;
+    temperatureChart.update();
+    return;
+  }
+
+  document.getElementById('empty-state').hidden = true;
+  document.getElementById('temperature-card').hidden = false;
+
+  temperatureChart = new Chart(document.getElementById('temperature-chart'), {
+    type: 'line',
+    data: { labels, datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      scales: {
+        x: {
+          ticks: {
+            maxTicksLimit: 12,
+            callback(value) {
+              const ts = this.getLabelForValue(value);
+              return new Date(ts).toLocaleString([], {
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+              });
+            },
+          },
+        },
+        y: { title: { display: true, text: '°C' } },
+      },
+    },
+  });
+}
+
 // Live-reload during the demo: poll /api/version every 2 seconds, reload
 // the page whenever the version changes (file added/modified or server
 // restarted by nodemon). Soft — only reloads when something actually moved.
@@ -79,6 +157,8 @@ function wireAlertForm() {
 }
 
 checkHealth();
+loadTemperatureChart();
+setInterval(loadTemperatureChart, 30000);
 autoReloadCheck();
 setInterval(autoReloadCheck, 2000);
 

@@ -43,7 +43,8 @@ main {
   color: var(--muted);
 }
 
-#alerts-panel {
+#alerts-panel,
+.card {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -111,3 +112,7 @@ main {
 .alert.triggered .alert-status { color: #b91c1c; }
 
 .alert-empty { color: var(--muted); }
+
+.card h2 { margin: 0 0 1rem; font-size: 1.1rem; }
+
+.card canvas { width: 100%; height: 360px; }
