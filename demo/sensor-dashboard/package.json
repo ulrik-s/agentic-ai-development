@@ -9,12 +9,13 @@
     "start:once": "node server.js",
     "seed": "node data/seed.js",
     "reset": "bash ../reset.sh",
-    "test": "echo \"no tests yet — see issue #5\" && exit 0"
+    "test": "playwright test"
   },
   "dependencies": {
     "express": "^4.19.2"
   },
   "devDependencies": {
+    "@playwright/test": "^1.48.0",
     "nodemon": "^3.1.0"
   }
 }
