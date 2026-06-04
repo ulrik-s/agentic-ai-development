@@ -28,8 +28,32 @@ app.get('/api/version', (req, res) => {
   res.json({ version: latest, boot: BOOT_TIME });
 });
 
-// TODO (issue #1): GET /api/readings — return readings from data/readings.json
-// Supports query params: ?sensor=<id>&from=<iso>&to=<iso>&limit=<n>
+// GET /api/readings — return readings from data/readings.json.
+// Filters: ?sensor=<id>&type=<temperature|humidity>&from=<iso>&to=<iso>&limit=<n>
+app.get('/api/readings', (req, res) => {
+  const { sensor, type, from, to } = req.query;
+
+  let limit = 500;
+  if (req.query.limit !== undefined) {
+    limit = Number(req.query.limit);
+    if (!Number.isInteger(limit) || limit < 1 || limit > 5000) {
+      return res.status(400).json({
+        error: 'limit must be an integer between 1 and 5000',
+      });
+    }
+  }
+
+  let readings = JSON.parse(fs.readFileSync(DATA_FILE, 'utf-8'));
+  if (sensor) readings = readings.filter((r) => r.sensor_id === sensor);
+  if (type) readings = readings.filter((r) => r.type === type);
+  if (from) readings = readings.filter((r) => r.ts >= from);
+  if (to) readings = readings.filter((r) => r.ts <= to);
+
+  readings.sort((a, b) => a.ts.localeCompare(b.ts));
+  readings = readings.slice(-limit);
+
+  res.json({ count: readings.length, readings });
+});
 
 // TODO (issue #4): POST /api/alerts — store a threshold alert rule
 // TODO (issue #4): GET  /api/alerts — list active alerts
