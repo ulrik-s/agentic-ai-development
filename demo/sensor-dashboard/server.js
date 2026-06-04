@@ -55,8 +55,42 @@ app.get('/api/readings', (req, res) => {
   res.json({ count: readings.length, readings });
 });
 
-// TODO (issue #4): POST /api/alerts — store a threshold alert rule
-// TODO (issue #4): GET  /api/alerts — list active alerts
+// Issue #4: threshold alert rules. Kept in memory — no persistence for the demo.
+const alertRules = [];
+let nextAlertId = 1;
+
+function latestReading(sensorId, type) {
+  const readings = JSON.parse(fs.readFileSync(DATA_FILE, 'utf-8'));
+  let latest = null;
+  for (const r of readings) {
+    if (r.sensor_id !== sensorId || r.type !== type) continue;
+    if (!latest || r.ts > latest.ts) latest = r;
+  }
+  return latest;
+}
+
+app.post('/api/alerts', (req, res) => {
+  const { sensor_id, type, op, threshold } = req.body || {};
+  if (!sensor_id || !type || (op !== '>' && op !== '<') || typeof threshold !== 'number') {
+    return res.status(400).json({
+      error: 'expected { sensor_id, type, op: ">"|"<", threshold: number }',
+    });
+  }
+  const rule = { id: nextAlertId++, sensor_id, type, op, threshold };
+  alertRules.push(rule);
+  res.status(201).json(rule);
+});
+
+app.get('/api/alerts', (req, res) => {
+  const alerts = alertRules.map((rule) => {
+    const reading = latestReading(rule.sensor_id, rule.type);
+    const value = reading ? reading.value : null;
+    const triggered = value !== null
+      && (rule.op === '>' ? value > rule.threshold : value < rule.threshold);
+    return { ...rule, value, triggered };
+  });
+  res.json(alerts);
+});
 
 app.listen(PORT, () => {
   const count = fs.existsSync(DATA_FILE)

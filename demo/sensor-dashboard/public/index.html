@@ -16,7 +16,29 @@
   <main>
     <!-- TODO (issue #2): temperature chart goes here -->
     <!-- TODO (issue #3): humidity chart goes here  -->
-    <!-- TODO (issue #4): alerts panel goes here   -->
+
+    <section id="alerts-panel">
+      <h2>Alerts</h2>
+      <form id="alert-form">
+        <select id="alert-sensor" required>
+          <option value="office-1">office-1</option>
+          <option value="office-2">office-2</option>
+          <option value="lobby">lobby</option>
+        </select>
+        <select id="alert-type" required>
+          <option value="temperature">temperature</option>
+          <option value="humidity">humidity</option>
+        </select>
+        <select id="alert-op" required>
+          <option value=">">&gt;</option>
+          <option value="<">&lt;</option>
+        </select>
+        <input id="alert-threshold" type="number" step="any" placeholder="threshold" required>
+        <button type="submit">Add rule</button>
+      </form>
+      <ul id="alert-list"></ul>
+    </section>
+
     <section id="empty-state">
       <p>No charts yet. Agents — over to you.</p>
     </section>
